@@ -4,8 +4,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Movies and TV Shows Explorer: Software Requirements Specification</title>
-    <link rel = "stylesheet" href="documentatie-style.css">
+   <style>
+       body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-size: 16px;
+    line-height: 1.6;
+}
+h1, h2 {
+    font-weight: bold;
+    font-size: 24px;
+    margin-bottom: 10px;
+}
+p, ul, ol {
+    margin-bottom: 15px;
+}
+.purple-text {
+    font-size: 32px;
+    color: purple;
+}
+.container {
+    width: 60%;
+    margin: 0 auto;
+    background-color: #ffffff;
+    padding: 20px;
+    box-sizing: border-box;
+}
+.content-summary{
+    font-size: 16px;
+}
+   </style>
     <link rel="icon" href="/images/movie-logo.png" type="image/icon">
+    <style>
 </head>
 <body>
     <div class="container">
@@ -55,25 +84,20 @@
         </div>
     <p><strong>Product Name:</strong> Movies and TV Shows Explorer</p>
     <p><strong>Revision/Release Number:</strong>  1.0</p>
-
     <h1 id="1.0" class="purple-text">1. Introduction</h1>
     <h2 id="1.1">1.1 Intended Audience:</h2>
     <p>The Software Requirements Specification (SRS) document for the Movies and TV Shows Exploreris intended for:</p>
     <ul>
         <li>Colab. Isepciuc Daniel </li>
     </ul>
-
     <h2 id="1.2">1.2 Scope</h2>
     <p>The scope of the project includes the development of a custom API-based web application that presents interactive data from streaming services like Netflix and Disney, correlated with additional information available from The Movie Database (TMDb). The application will offer at least three different visualization methods and support exporting statistics and visualizations in CSV, WebP, and SVG formats. The system will also support multi-criteria search and filtering of data.</p>
-  
-
     <h2 id="1.3">1.3 References</h2>
     <ol>
         <li><strong>Logo Generator</strong><a href="https://www.design.com"> design.com</a></li>
         <li><strong>Guide about using CSS Box Model</strong><a href="https://www.youtube.com/watch?v=rIO5326FgPE&ab_channel=WebDevSimplified"> Youtube Link</a></li>
         <li><strong>Inspiration:</strong> a similar website <a href="https://www1.divxfilmeonline.net/home02/">DivXFilmeOnline</a></li>
     </ol>
-
     <h1 id="2.0" class="purple-text">2. Description</h1>
     <h2 id="2.1">2.1 Product Perspective</h2>
         <p><strong>The product:</strong> is a standalone web application that aims to provide a comprehensive and interactive platform for exploring and analyzing data from streaming services and The Movie Database (TMDb).</p>
@@ -81,11 +105,8 @@
         <ul>
             <li><strong>API Server: </strong>The API server will be responsible for handling requests from the frontend application and fetching data from various sources such as Netflix, Disney, and TMDb.</li>
             <li><strong>Database: </strong>The database will store the fetched data and provide it to the API server for further processing and analysis.</li>
-            <li><strong>Frontend Application: </strong>The frontend application will be responsible for displaying the fetched data to the end-users and providing them with the ability to interact with it.</li>
-            
+            <li><strong>Frontend Application: </strong>The frontend application will be responsible for displaying the fetched data to the end-users and providing them with the ability to interact with it.</li>  
         </ul>
-       
-    
     <h2 id="2.2">2.2 Product Functions</h2>
    <ul>
         <li>Custom API development</li>
@@ -132,27 +153,20 @@
     <li>The adherence to relevant data privacy and security regulations.</li>
   </ul>
   <h1 id="3.0" class="purple-text">3. Interface</h1>
-  
   <h3 id="3.1">3.1 API Interface</h3>
   <p>The API interface in our project acts as the intermediary between the frontend application and the backend API server. It defines the endpoints, request methods, and data formats for communication. Through this interface, our frontend can make requests to the server to fetch or manipulate data related to Netflix, Disney, and TMDb.</p>
-  
   <h3 id="3.2">3.2 Database Interface</h3>
   <p>Our database interface facilitates seamless communication between the API server and the underlying database system. It handles tasks such as storing and retrieving data related to streaming content, user preferences, and statistical information. This interface ensures efficient data management and persistence within our system.</p>
-  
   <h3 id="3.3">3.3 User Interface</h3>
   <p>The user interface (UI) is the primary point of interaction between our platform and its users. It presents the fetched data from Netflix, Disney, and TMDb in a visually appealing and intuitive manner, allowing users to explore and interact with the content seamlessly. Our UI design prioritizes usability, accessibility, and responsiveness to deliver an exceptional user experience.</p>
-  
   <h3 id="3.4">3.4 Third-Party APIs</h3>
   <p>Our system interfaces with third-party APIs provided by Netflix, Disney, and TMDb to access a diverse range of streaming content data. These APIs provide valuable information such as movie titles, ratings, reviews, and actor details, enriching our platform's dataset. Integration with these APIs requires adherence to their specifications and authentication mechanisms.</p>
-  
   <h3 id="3.5">3.5 Export Interface</h3>
   <p>The export interface in our project empowers users to export statistics and visualizations generated by the system in various formats, including CSV, WebP, and SVG. This functionality enhances data portability and allows users to share or analyze data outside of our platform. Our export interface offers customization options to tailor the exported data to users' specific needs.</p>
-  
   <h3 id="3.6">3.6 Search and Filter Interface</h3>
   <p>Our search and filter interface provides users with robust tools to refine and narrow down the dataset based on specific criteria. Users can perform multi-criteria searches, apply filters, and sort results to find relevant streaming content efficiently. This interface enhances user productivity and aids in discovering insights within the vast dataset available on our platform.</p>
 <p>These interfaces will ensure that the system is modular, scalable, and maintainable, and can be easily integrated with other systems and services.</p>
 <h1 id="4.0" class="purple-text">4. System Features</h1>
-  
 <h3 id="4.1">4.1 Feature 1: Netflix and Disney Data Presentation</h3>
 <p>Description and Priority: This functionality aims to provide an interactive presentation of data from Netflix and Disney, including information such as movie titles, TV shows, ratings, reviews, and actor details.</p>
 <ul>
@@ -166,7 +180,6 @@
     <li>Export in Multiple Formats: Users have the ability to export data and visualizations generated in CSV, WebP, and SVG formats, providing flexibility in managing and distributing information.</li>
     <li>User-Friendly: The export functionality is integrated into the user interface and is easily accessible, facilitating the process of exporting data.</li>
 </ul>
-
 <h3 id="4.3">4.3 Multi-Criteria Search and Filtering</h3>
 <p>Description and Priority: This functionality supports multi-criteria search and filtering of data, allowing users to quickly and efficiently find the desired information.</p>
 <ul>
@@ -174,14 +187,12 @@
     <li>Multi-Criteria Filtering: The filtering functionality allows users to apply multiple filtering criteria simultaneously to refine search results.</li>
     <li>Ease of Use: The user interface is intuitive and user-friendly, making the process of searching and filtering data straightforward.</li>
 </ul>
-
 <h2 id="4.4">4.4 Additional Resources for Data Visualization</h2>
 <p>In addition to the main functionalities listed above, the platform also utilizes additional resources to enhance and diversify the ways data is presented, such as:</p>
 <ul>
     <li>Visualization Libraries and Frameworks: Used to generate and display charts, diagrams, and interactive tables, ensuring an attractive and informative presentation of data.</li>
     <li>Data Analysis Tools: Used to perform complex analyses and extract valuable insights from the available data, contributing to improving the quality and relevance of the presented information.</li>
 </ul>
-  
   <h1 id="5.0" class="purple-text">5. Other Requirements</h1>
   <h2 id="5.1">5.1 Performance Requirements</h2>
   <ul>
