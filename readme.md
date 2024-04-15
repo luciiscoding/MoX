@@ -1,40 +1,40 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movies and TV Shows Explorer: Software Requirements Specification</title>
-   <style>
-       body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 16px;
-    line-height: 1.6;
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Movies and TV Shows Explorer: Software Requirements Specification</title>
+<style>
+body {
+ font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+ font-size: 16px;
+ line-height: 1.6;
 }
 h1, h2 {
-    font-weight: bold;
-    font-size: 24px;
-    margin-bottom: 10px;
+font-weight: bold;
+font-size: 24px;
+margin-bottom: 10px;
 }
 p, ul, ol {
-    margin-bottom: 15px;
+margin-bottom: 15px;
 }
 .purple-text {
-    font-size: 32px;
-    color: purple;
+font-size: 32px;
+color: purple;
 }
 .container {
-    width: 60%;
-    margin: 0 auto;
-    background-color: #ffffff;
-    padding: 20px;
-    box-sizing: border-box;
+ width: 60%;
+margin: 0 auto;
+background-color: #ffffff;
+padding: 20px;
+box-sizing: border-box;
 }
 .content-summary{
-    font-size: 16px;
+font-size: 16px;
 }
-   </style>
-    <link rel="icon" href="/images/movie-logo.png" type="image/icon">
-    <style>
+ </style>
+<link rel="icon" href="/images/movie-logo.png" type="image/icon">
+<style>
 </head>
 <body>
     <div class="container">
