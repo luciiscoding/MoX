@@ -3,9 +3,7 @@ const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
-const handleApiRequest = require('./controllers/api-controller');
-const { login, signUp } = require('./controllers/user-controller');
-const { handleViewRequest } = require('./views/view-controller');
+
 
 const PORT = 7081;
 const MONGOURL = "mongodb://localhost:27017/MoX";
