@@ -1,13 +1,9 @@
-// backend/server.js
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
-const apiController = require('./controllers/api-controller');
-const userController = require('./controllers/user-controller');
 const movieController = require('./controllers/movie-controller');
-const viewController = require('./views/view-controller');
 
 const PORT = 7081;
 const MONGOURL = "mongodb://localhost:27017/MoX";
@@ -36,6 +32,19 @@ const serveStaticFile = (filePath, contentType, res) => {
   });
 };
 
+// CORS middleware
+const setCorsHeaders = (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+  } else {
+    next();
+  }
+};
+
 // Function to handle API requests
 const handleApiRequest = (req, res) => {
   const parsedUrl = url.parse(req.url, true);
@@ -43,79 +52,46 @@ const handleApiRequest = (req, res) => {
   const id = pathParts.length === 2 ? pathParts[1] : null;
 
   // Set CORS headers
-  res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
-  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  setCorsHeaders(req, res, async () => {
+    console.log(`Handling request for ${req.method} ${req.url}`);
+    console.log(`Headers: ${JSON.stringify(req.headers)}`);
 
-  // Handle preflight requests
-  if (req.method === 'OPTIONS') {
-    res.writeHead(204);
-    res.end();
-    return;
-  }
+    // Parse JSON body
+    let body = '';
+    req.on('data', chunk => {
+      body += chunk.toString();
+    });
 
-  console.log(`Handling request for ${req.method} ${req.url}`);
-  console.log(`Headers: ${JSON.stringify(req.headers)}`);
-
-  // Parse JSON body
-  let body = '';
-  req.on('data', chunk => {
-    body += chunk.toString();
-  });
-
-  req.on('end', async () => {
-    try {
-      req.body = body ? JSON.parse(body) : {};
-      console.log(`Body: ${JSON.stringify(req.body)}`);
-    } catch (err) {
-      console.error('Error parsing JSON:', err);
-      res.writeHead(400, { 'Content-Type': 'text/plain' });
-      res.end('Invalid JSON');
-      return;
-    }
-
-    if (req.method === 'GET' && pathParts[0] === 'api') {
-      if (pathParts[1] === 'users') {
-        if (id) {
-          apiController.getUser(req, res, id);
-        } else {
-          apiController.getUsers(req, res);
-        }
-      } else if (pathParts[1] === 'movies') {
-        if (id) {
-          movieController.getMovie(req, res, id);
-        } else {
-          movieController.getMovies(req, res);
-        }
+    req.on('end', async () => {
+      try {
+        req.body = body ? JSON.parse(body) : {};
+        console.log(`Body: ${JSON.stringify(req.body)}`);
+      } catch (err) {
+        console.error('Error parsing JSON:', err);
+        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        res.end('Invalid JSON');
+        return;
       }
-    } else if (req.method === 'POST' && pathParts[0] === 'api') {
-      if (pathParts[1] === 'users') {
-        if (pathParts[2] === 'register') {
-          userController.register(req, res);
-        } else if (pathParts[2] === 'login') {
-          userController.login(req, res);
-        } else {
-          apiController.createUser(req, res);
+
+      if (req.method === 'GET' && pathParts[0] === 'api') {
+        if (pathParts[1] === 'movies') {
+          if (id) {
+            movieController.getMovie(req, res, id);
+          } else {
+            movieController.getMovies(req, res);
+          }
         }
-      } else if (pathParts[1] === 'movies') {
+      } else if (req.method === 'POST' && pathParts[0] === 'api' && pathParts[1] === 'movies') {
         movieController.createMovie(req, res);
-      }
-    } else if (req.method === 'PUT' && pathParts[0] === 'api' && id) {
-      if (pathParts[1] === 'users') {
-        apiController.updateUser(req, res, id);
-      } else if (pathParts[1] === 'movies') {
+      } else if (req.method === 'PUT' && pathParts[0] === 'api' && pathParts[1] === 'movies' && id) {
         movieController.updateMovie(req, res, id);
-      }
-    } else if (req.method === 'DELETE' && pathParts[0] === 'api' && id) {
-      if (pathParts[1] === 'users') {
-        apiController.deleteUser(req, res, id);
-      } else if (pathParts[1] === 'movies') {
+      } else if (req.method === 'DELETE' && pathParts[0] === 'api' && pathParts[1] === 'movies' && id) {
         movieController.deleteMovie(req, res, id);
+      } else {
+        res.writeHead(404, { 'Content-Type': 'text/plain' });
+        res.end('Not Found');
       }
-    } else {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('Not Found');
-    }
+    });
   });
 };
 
