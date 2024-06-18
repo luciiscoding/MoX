@@ -5,15 +5,14 @@ const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 const apiController = require('./controllers/api-controller');
+const movieController = require('./controllers/movie-controller'); // Add this line
+const viewController = require('./views/view-controller');
 
 const PORT = 7081;
 const MONGOURL = "mongodb://localhost:27017/MoX";
 
 // Connect to MongoDB
-mongoose.connect(MONGOURL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-});
+mongoose.connect(MONGOURL);
 
 mongoose.connection.on('connected', () => {
   console.log('Connected to MongoDB');
@@ -42,27 +41,70 @@ const handleApiRequest = (req, res) => {
   const pathParts = parsedUrl.pathname.split('/').filter(Boolean);
   const id = pathParts.length === 2 ? pathParts[1] : null;
 
-  if (req.method === 'GET' && pathParts[0] === 'api' && pathParts[1] === 'users') {
-    if (id) {
-      apiController.getUser(req, res, id);
-    } else {
-      apiController.getUsers(req, res);
+  console.log(`Handling request for ${req.method} ${req.url}`);
+  console.log(`Headers: ${JSON.stringify(req.headers)}`);
+
+  // Parse JSON body
+  let body = '';
+  req.on('data', chunk => {
+    body += chunk.toString();
+  });
+
+  req.on('end', async () => {
+    try {
+      req.body = body ? JSON.parse(body) : {};
+      console.log(`Body: ${JSON.stringify(req.body)}`);
+    } catch (err) {
+      console.error('Error parsing JSON:', err);
+      res.writeHead(400, { 'Content-Type': 'text/plain' });
+      res.end('Invalid JSON');
+      return;
     }
-  } else if (req.method === 'POST' && pathParts[0] === 'api' && pathParts[1] === 'users') {
-    apiController.createUser(req, res);
-  } else if (req.method === 'PUT' && pathParts[0] === 'api' && pathParts[1] === 'users' && id) {
-    apiController.updateUser(req, res, id);
-  } else if (req.method === 'DELETE' && pathParts[0] === 'api' && pathParts[1] === 'users' && id) {
-    apiController.deleteUser(req, res, id);
-  } else {
-    res.writeHead(404, { 'Content-Type': 'text/plain' });
-    res.end('Not Found');
-  }
+
+    if (req.method === 'GET' && pathParts[0] === 'api') {
+      if (pathParts[1] === 'users') {
+        if (id) {
+          apiController.getUser(req, res, id);
+        } else {
+          apiController.getUsers(req, res);
+        }
+      } else if (pathParts[1] === 'movies') {
+        if (id) {
+          movieController.getMovie(req, res, id);
+        } else {
+          movieController.getMovies(req, res);
+        }
+      }
+    } else if (req.method === 'POST' && pathParts[0] === 'api') {
+      if (pathParts[1] === 'users') {
+        apiController.createUser(req, res);
+      } else if (pathParts[1] === 'movies') {
+        movieController.createMovie(req, res);
+      }
+    } else if (req.method === 'PUT' && pathParts[0] === 'api' && id) {
+      if (pathParts[1] === 'users') {
+        apiController.updateUser(req, res, id);
+      } else if (pathParts[1] === 'movies') {
+        movieController.updateMovie(req, res, id);
+      }
+    } else if (req.method === 'DELETE' && pathParts[0] === 'api' && id) {
+      if (pathParts[1] === 'users') {
+        apiController.deleteUser(req, res, id);
+      } else if (pathParts[1] === 'movies') {
+        movieController.deleteMovie(req, res, id);
+      }
+    } else {
+      res.writeHead(404, { 'Content-Type': 'text/plain' });
+      res.end('Not Found');
+    }
+  });
 };
 
-// Function to handle other view requests
+// Function to handle view requests
 const handleViewRequest = (req, res) => {
-  const filePath = path.join(__dirname, '../frontend', req.url);
+  const parsedUrl = url.parse(req.url, true);
+  const pathname = parsedUrl.pathname === '/' ? '/home.html' : parsedUrl.pathname;
+  const filePath = path.join(__dirname, '../frontend', pathname);
   const extname = path.extname(filePath);
   let contentType = 'text/html';
 
@@ -87,28 +129,12 @@ const handleViewRequest = (req, res) => {
       break;
   }
 
-  fs.readFile(filePath, (err, data) => {
-    if (err) {
-      if (err.code === 'ENOENT') {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('404 - File Not Found');
-      } else {
-        res.writeHead(500, { 'Content-Type': 'text/plain' });
-        res.end('500 - Internal Server Error');
-      }
-    } else {
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(data);
-    }
-  });
+  serveStaticFile(filePath, contentType, res);
 };
 
 // Create server and handle requests
 const server = http.createServer((req, res) => {
-  const parsedUrl = url.parse(req.url, true);
-  const { pathname } = parsedUrl;
-
-  if (pathname.startsWith('/api')) {
+  if (req.url.startsWith('/api')) {
     handleApiRequest(req, res);
   } else {
     handleViewRequest(req, res);
@@ -118,3 +144,6 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
+
+//  node backend/server.js
+//  http://127.0.0.1:7081/api/movies/Movies
