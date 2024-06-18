@@ -1,3 +1,4 @@
+<!-- frontend/html/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,7 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../images/movie-logo.png" type="image/icon">
     <link rel="stylesheet" type="text/css" href="../styles/style.css" />
-   
     <title>MoX</title>
 </head>
 <body>
@@ -16,6 +16,7 @@
             <li><a href="about.html">About Us</a></li>
             <li><a href="contact.html">Contact</a></li>
             <li><a href="login.html">Log out</a></li>
+            <li id="adminMoviesMenuItem"><a href="manage-movies.html">Manage Movies</a></li>
         </ul>
         <ul>
             <li><img src="../images/movie-logo.png" alt="logo"></li>
@@ -24,6 +25,7 @@
             <li class="hideOnMobile"><a href="contact.html">Contact</a></li>
             <li class="hideOnMobile"><a href="login.html">Log out</a></li>
             <li class="menu--button" onclick="showSidebar()"><img src="../images/burger-menu.png" alt="menuButton"></li>
+            <li id="adminMoviesMenuItem" class="hideOnMobile"><a href="manage-movies.html">Manage Movies</a></li>
         </ul>
     </nav>
 
@@ -76,5 +78,6 @@
     </div>
 
     <script src="../scripts/script.js"></script>
+    <script src="../scripts/admin.js"></script>
 </body>
 </html>

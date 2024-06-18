@@ -1,3 +1,4 @@
+<!-- frontend/html/register.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,32 +7,54 @@
     <link rel="icon" href="../images/movie-logo.png" type="image/icon">
     <link rel="stylesheet" type="text/css" href="../styles/style-register.css" />
     <title>Register</title>
-  
 </head>
 <body>
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    <form>
+    <form id="registerForm">
         <h3>Registration Form</h3>
-
-
-        <label for="username">Email</label>
-        <input type="text" placeholder="Enter your email" id="username">
-
+        <label for="email">Email</label>
+        <input type="email" placeholder="Enter your email" id="email" required>
         <label for="username">Username</label>
-        <input type="text" placeholder="Enter your username" id="username">
-
+        <input type="text" placeholder="Enter your username" id="username" required>
         <label for="password">Password</label>
-        <input type="password" placeholder="Password" id="password">
-
-        <label for="username">Re-enter password</label>
-        <input type="password" placeholder="Password" id="password">
-
-       
-            <a href="index.html" class="button">Register</a>
-            
+        <input type="password" placeholder="Password" id="password" required>
+        <label for="confirmPassword">Re-enter password</label>
+        <input type="password" placeholder="Password" id="confirmPassword" required>
+        <button type="submit" class="button">Register</button>
     </form>
+    <script>
+        document.getElementById('registerForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+            if (password !== confirmPassword) {
+                alert('Passwords do not match');
+                return;
+            }
+            try {
+                const response = await fetch('http://localhost:7081/api/users/register', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, username, password })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Registration successful');
+                    window.location.href = 'login.html'; // Redirect to login page
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert('An error occurred: ' + error.message);
+            }
+        });
+    </script>
 </body>
 </html>
