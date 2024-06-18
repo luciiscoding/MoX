@@ -1,3 +1,4 @@
+<!-- frontend/html/login.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,29 +7,50 @@
     <link rel="icon" href="../images/movie-logo.png" type="image/icon">
     <link rel="stylesheet" type="text/css" href="../styles/style-login.css" />
     <title>Login</title>
-  
 </head>
 <body>
     <div class="background">
         <div class="shape"></div>
         <div class="shape"></div>
     </div>
-    <form>
+    <form id="loginForm">
         <h3>Login Here</h3>
-
-        <label for="username">Username</label>
-        <input type="text" placeholder="Email or Phone" id="username">
-
+        <label for="email">Email</label>
+        <input type="email" placeholder="Email" id="email" required>
         <label for="password">Password</label>
-        <input type="password" placeholder="Password" id="password">
-
+        <input type="password" placeholder="Password" id="password" required>
         <div class="pyramid">
-            <a href="index.html" class="button">Log In</a>
+            <button type="submit" class="button">Log In</button>
             <div class="social">
-              <div class="register"><a href="register.html">Register</a></div>
-              <div class="admin"><a href="admin.html">Login as admin</a></div>
+                <div class="register"><a href="register.html">Register</a></div>
+                <div class="admin"><a href="admin.html">Login as admin</a></div>
             </div>
-          </div>
+        </div>
     </form>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            try {
+                const response = await fetch('http://localhost:7081/api/users/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ email, password })
+                });
+                const data = await response.json();
+                if (response.ok) {
+                    alert('Login successful');
+                    window.location.href = 'index.html'; // Redirect to index page
+                } else {
+                    alert(data.message);
+                }
+            } catch (error) {
+                alert('An error occurred: ' + error.message);
+            }
+        });
+    </script>
 </body>
 </html>

@@ -5,7 +5,8 @@ const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 const apiController = require('./controllers/api-controller');
-const movieController = require('./controllers/movie-controller'); // Add this line
+const userController = require('./controllers/user-controller');
+const movieController = require('./controllers/movie-controller');
 const viewController = require('./views/view-controller');
 
 const PORT = 7081;
@@ -40,6 +41,18 @@ const handleApiRequest = (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const pathParts = parsedUrl.pathname.split('/').filter(Boolean);
   const id = pathParts.length === 2 ? pathParts[1] : null;
+
+  // Set CORS headers
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+
+  // Handle preflight requests
+  if (req.method === 'OPTIONS') {
+    res.writeHead(204);
+    res.end();
+    return;
+  }
 
   console.log(`Handling request for ${req.method} ${req.url}`);
   console.log(`Headers: ${JSON.stringify(req.headers)}`);
@@ -77,7 +90,13 @@ const handleApiRequest = (req, res) => {
       }
     } else if (req.method === 'POST' && pathParts[0] === 'api') {
       if (pathParts[1] === 'users') {
-        apiController.createUser(req, res);
+        if (pathParts[2] === 'register') {
+          userController.register(req, res);
+        } else if (pathParts[2] === 'login') {
+          userController.login(req, res);
+        } else {
+          apiController.createUser(req, res);
+        }
       } else if (pathParts[1] === 'movies') {
         movieController.createMovie(req, res);
       }
@@ -144,6 +163,3 @@ const server = http.createServer((req, res) => {
 server.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });
-
-//  node backend/server.js
-//  http://127.0.0.1:7081/api/movies/Movies

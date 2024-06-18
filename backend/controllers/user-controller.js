@@ -1,95 +1,41 @@
 // backend/controllers/user-controller.js
 const User = require('../models/user');
+const bcrypt = require('bcryptjs'); // Use bcryptjs instead of bcrypt
+const jwt = require('jsonwebtoken');
 
-const getUsers = async (req, res) => {
+const register = async (req, res) => {
   try {
-    const users = await User.find();
+    const { username, email, password } = req.body;
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ username, email, password: hashedPassword });
+    await newUser.save();
+    res.writeHead(201, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'User registered successfully' }));
+  } catch (err) {
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'Internal Server Error' }));
+  }
+};
+
+const login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    const user = await User.findOne({ email });
+    if (!user || !(await bcrypt.compare(password, user.password))) {
+      res.writeHead(401, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'Invalid email or password' }));
+      return;
+    }
+    const token = jwt.sign({ userId: user._id }, 'secretKey', { expiresIn: '1h' });
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify(users));
+    res.end(JSON.stringify({ token }));
   } catch (err) {
-    res.writeHead(500, { 'Content-Type': 'text/plain' });
-    res.end('Internal Server Error');
-  }
-};
-
-const createUser = async (req, res) => {
-  let body = '';
-  req.on('data', chunk => {
-    body += chunk.toString();
-  });
-  req.on('end', async () => {
-    try {
-      const userData = JSON.parse(body);
-      const newUser = new User(userData);
-      await newUser.save();
-      res.writeHead(201, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(newUser));
-    } catch (err) {
-      res.writeHead(500, { 'Content-Type': 'text/plain' });
-      res.end('Internal Server Error');
-    }
-  });
-};
-
-const getUser = async (req, res, id) => {
-  try {
-    const user = await User.findById(id);
-    if (user) {
-      res.writeHead(200, { 'Content-Type': 'application/json' });
-      res.end(JSON.stringify(user));
-    } else {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('User not found');
-    }
-  } catch (err) {
-    res.writeHead(500, { 'Content-Type': 'text/plain' });
-    res.end('Internal Server Error');
-  }
-};
-
-const updateUser = async (req, res, id) => {
-  let body = '';
-  req.on('data', chunk => {
-    body += chunk.toString();
-  });
-  req.on('end', async () => {
-    try {
-      const updatedData = JSON.parse(body);
-      const updatedUser = await User.findByIdAndUpdate(id, updatedData, { new: true });
-      if (updatedUser) {
-        res.writeHead(200, { 'Content-Type': 'application/json' });
-        res.end(JSON.stringify(updatedUser));
-      } else {
-        res.writeHead(404, { 'Content-Type': 'text/plain' });
-        res.end('User not found');
-      }
-    } catch (err) {
-      res.writeHead(500, { 'Content-Type': 'text/plain' });
-      res.end('Internal Server Error');
-    }
-  });
-};
-
-const deleteUser = async (req, res, id) => {
-  try {
-    const deletedUser = await User.findByIdAndDelete(id);
-    if (deletedUser) {
-      res.writeHead(204);
-      res.end();
-    } else {
-      res.writeHead(404, { 'Content-Type': 'text/plain' });
-      res.end('User not found');
-    }
-  } catch (err) {
-    res.writeHead(500, { 'Content-Type': 'text/plain' });
-    res.end('Internal Server Error');
+    res.writeHead(500, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify({ message: 'Internal Server Error' }));
   }
 };
 
 module.exports = {
-  getUsers,
-  createUser,
-  getUser,
-  updateUser,
-  deleteUser
+  register,
+  login
 };
