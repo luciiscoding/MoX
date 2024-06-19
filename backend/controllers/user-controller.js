@@ -1,11 +1,17 @@
 // backend/controllers/user-controller.js
 const User = require('../models/user');
-const bcrypt = require('bcryptjs'); // Use bcryptjs instead of bcrypt
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 
 const register = async (req, res) => {
   try {
     const { username, email, password } = req.body;
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      res.writeHead(409, { 'Content-Type': 'application/json' });
+      res.end(JSON.stringify({ message: 'User already exists' }));
+      return;
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
