@@ -1,9 +1,11 @@
+// server.js
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 const movieController = require('./controllers/movie-controller');
+const userController = require('./controllers/user-controller'); // Include the user controller
 
 const PORT = 7081;
 const MONGOURL = "mongodb://localhost:27017/MoX";
@@ -81,8 +83,12 @@ const handleApiRequest = (req, res) => {
             movieController.getMovies(req, res);
           }
         }
-      } else if (req.method === 'POST' && pathParts[0] === 'api' && pathParts[1] === 'movies') {
-        movieController.createMovie(req, res);
+      } else if (req.method === 'POST' && pathParts[0] === 'api') {
+        if (pathParts[1] === 'movies') {
+          movieController.createMovie(req, res);
+        } else if (pathParts[1] === 'users' && pathParts[2] === 'register') {
+          userController.register(req, res);
+        }
       } else if (req.method === 'PUT' && pathParts[0] === 'api' && pathParts[1] === 'movies' && id) {
         movieController.updateMovie(req, res, id);
       } else if (req.method === 'DELETE' && pathParts[0] === 'api' && pathParts[1] === 'movies' && id) {

@@ -1,86 +1,133 @@
-<!-- frontend/html/index.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" href="../images/movie-logo.png" type="image/icon">
-  <link rel="stylesheet" type="text/css" href="../styles/style.css" />
-  <title>MoX</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../images/movie-logo.png" type="image/icon">
+    <link rel="stylesheet" type="text/css" href="../styles/style.css" />
+    <title>MoX</title>
 </head>
 <body>
-  <!-- Navigation and other HTML elements -->
-  <h1 class="header">Movies and TV Shows Explorer</h1>
-  <button id="filterButton">Filter Button</button>
-  <div id="filterOptions" style="display: none;">
-    <div id="filterButtonsContainer">
-      <button class="filterOption" data-category="category1">Netflix</button>
-      <button class="filterOption" data-category="category2">Disney</button>
+    <nav>
+        <ul class="sidebar">
+            <li onclick="hideSidebar()"><img src="../images/close.png" alt="closeButton"></li>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="about.html">About Us</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="login.html">Log out</a></li>
+        </ul>
+        <ul>
+            <li><img src="../images/movie-logo.png" alt="logo"></li>
+            <li class="hideOnMobile"><a href="index.html">Home</a></li>
+            <li class="hideOnMobile"><a href="about.html">About Us</a></li>
+            <li class="hideOnMobile"><a href="contact.html">Contact</a></li>
+            <li class="hideOnMobile"><a href="login.html">Log out</a></li>
+            <li class="menu--button" onclick="showSidebar()"><img src="../images/burger-menu.png" alt="menuButton"></li>
+        </ul>
+    </nav>
+
+    <h1 class="header">Movies and TV Shows Explorer</h1> 
+    <button id="filterButton">Filter Button</button>
+    <div id="filterOptions" style="display: none;">
+        <div id="filterButtonsContainer">
+            <button class="filterOption" data-category="category1">Netflix</button>
+            <button class="filterOption" data-category="category2">Disney</button>
+        </div>
     </div>
-  </div>
-  <br>
-  <div id="cardContainer"></div>
-  <div id="pagination">
-    <button id="prevPage">Previous</button>
-    <span id="pageInfo"></span>
-    <button id="nextPage">Next</button>
-  </div>
-  <script>
-    let currentPage = 1;
-    const limit = 10;
-  
-    document.addEventListener('DOMContentLoaded', () => {
-      fetchMovies(currentPage, limit);
-  
-      document.getElementById('prevPage').addEventListener('click', () => {
-        if (currentPage > 1) {
-          currentPage--;
-          fetchMovies(currentPage, limit);
+    <br>
+    <div id="cardContainer"></div>
+    <div id="pagination">
+        <button id="prevPage">Previous</button>
+        <span id="pageInfo"></span>
+        <button id="nextPage">Next</button>
+    </div>
+
+    <script>
+        function showSidebar() {
+            document.querySelector('.sidebar').style.display = 'block';
         }
-      });
-  
-      document.getElementById('nextPage').addEventListener('click', () => {
-        currentPage++;
-        fetchMovies(currentPage, limit);
-      });
-    });
-  
-    async function fetchMovies(page, limit) {
-      try {
-        const response = await fetch(`http://localhost:7081/api/movies?page=${page}&limit=${limit}`);
-        const responseText = await response.text();  // Get raw response text
-        console.log('Raw response:', responseText);
-  
-        if (!response.ok) {
-          throw new Error(`Network response was not ok: ${responseText}`);
+
+        function hideSidebar() {
+            document.querySelector('.sidebar').style.display = 'none';
         }
+
+        let currentPage = 1;
+        const limit = 10;
   
-        const data = JSON.parse(responseText);  // Parse JSON
-        const cardContainer = document.getElementById('cardContainer');
-        cardContainer.innerHTML = '';
+        document.addEventListener('DOMContentLoaded', () => {
+            fetchMovies(currentPage, limit);
   
-        data.movies.forEach(movie => {
-          const card = document.createElement('div');
-          card.classList.add('card');
-          card.innerHTML = `
-            <img src="../images/card-picture.avif" alt="${movie.title}">
-            <p>${movie.title}</p>
-            <p>${movie.description}</p>
-          `;
-          cardContainer.appendChild(card);
+            document.getElementById('prevPage').addEventListener('click', () => {
+                if (currentPage > 1) {
+                    currentPage--;
+                    fetchMovies(currentPage, limit);
+                }
+            });
+  
+            document.getElementById('nextPage').addEventListener('click', () => {
+                currentPage++;
+                fetchMovies(currentPage, limit);
+            });
+
+            document.getElementById('filterButton').addEventListener('click', () => {
+                const filterOptions = document.getElementById('filterOptions');
+                filterOptions.style.display = filterOptions.style.display === 'none' ? 'block' : 'none';
+            });
+
+            document.querySelectorAll('.filterOption').forEach(button => {
+                button.addEventListener('click', (event) => {
+                    const category = event.target.dataset.category;
+                    filterMovies(category);
+                });
+            });
         });
   
-        document.getElementById('pageInfo').innerText = `Page ${data.currentPage} of ${data.totalPages}`;
-  
-        // Disable prev button on first page and next button on last page
-        document.getElementById('prevPage').disabled = data.currentPage === 1;
-        document.getElementById('nextPage').disabled = data.currentPage === data.totalPages;
-      } catch (error) {
-        console.error('Error fetching movies:', error);
-      }
-    }
-  </script>
-  
-  
+        async function fetchMovies(page, limit) {
+            try {
+                const response = await fetch(`http://localhost:7081/api/movies?page=${page}&limit=${limit}`);
+                const responseText = await response.text();  // Get raw response text
+                console.log('Raw response:', responseText);
+    
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${responseText}`);
+                }
+    
+                const data = JSON.parse(responseText);  // Parse JSON
+                const cardContainer = document.getElementById('cardContainer');
+                cardContainer.innerHTML = '';
+    
+                data.movies.forEach(movie => {
+                    const card = document.createElement('div');
+                    card.classList.add('card');
+                    card.dataset.category = movie.category;
+                    card.innerHTML = `
+                        <img src="../images/card-picture.avif" alt="${movie.title}">
+                        <p>${movie.title}</p>
+                        <p>${movie.description}</p>
+                    `;
+                    cardContainer.appendChild(card);
+                });
+    
+                document.getElementById('pageInfo').innerText = `Page ${data.currentPage} of ${data.totalPages}`;
+    
+                // Disable prev button on first page and next button on last page
+                document.getElementById('prevPage').disabled = data.currentPage === 1;
+                document.getElementById('nextPage').disabled = data.totalPages && data.currentPage === data.totalPages;
+            } catch (error) {
+                console.error('Error fetching movies:', error);
+            }
+        }
+
+        function filterMovies(category) {
+            const cards = document.querySelectorAll('.card');
+            cards.forEach(card => {
+                if (card.dataset.category === category || category === 'all') {
+                    card.style.display = 'block';
+                } else {
+                    card.style.display = 'none';
+                }
+            });
+        }
+    </script>
 </body>
 </html>
