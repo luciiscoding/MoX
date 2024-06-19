@@ -10,6 +10,7 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     font-family: cursive;
+    padding-top: 50px; /* Adăugăm un padding-top pentru a face spațiu pentru navbar */
 }
 
 nav {
@@ -18,6 +19,7 @@ nav {
     width: 100%;
     background-image: linear-gradient(to top, #240727, #240628, #250529, #25052a, #25042b, #23042a, #220429, #200428, #1d0425, #1a0321, #17031e, #14021a);
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    z-index: 999; /* Setăm un z-index mai mare */
 }
 
 nav ul {
@@ -169,6 +171,9 @@ footer {
     width: 30%;
     margin-bottom: 20px;
     color: white;
+    flex-direction: column;
+    padding-bottom: 60px;
+    position: relative; /* Facem cardul relativ pentru poziționarea butoanelor */
 }
 
 .card img {
@@ -192,7 +197,7 @@ footer {
     display: flex;
     flex-direction: column;
     margin-top: 10px;
-    margin-left: -10px
+    margin-left: -10px;
 }
 
 .filterOption {
@@ -222,4 +227,44 @@ footer {
         width: 100%;
         text-align: center;
     }
+}
+
+.exportButtons {
+    position: absolute; /* Poziționăm butoanele absolut în raport cu cardul */
+    bottom: 20px; /* Așezăm butoanele la partea de jos a cardului */
+    right: 20px; /* Așezăm butoanele în dreapta */
+}
+
+.exportButtons button {
+    padding: 8px 16px;
+    background-color: #161a20;
+    border: none;
+    color: #f0f0f0;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-right: 10px; /* Adăugăm margin între butoane */
+}
+
+.exportButtons button:last-child {
+    margin-right: 0; /* Eliminăm marginul drept pentru ultimul buton */
+}
+#searchInput {
+    width: 20%; /* Lățime completă pentru a se potrivi cu containerul său */
+    padding: 8px 12px; /* Padding pentru a face textul mai lizibil */
+    border: 1px solid #ccc; /* Border subtil */
+    border-radius: 4px; /* Colțuri rotunjite pentru un look modern */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Umbră ușoară pentru adâncime */
+    font-size: 16px; /* Mărimea fontului pentru ușurința citirii */
+    color: #333; /* Culoare text */
+    background-color: #fff; /* Fundal alb */
+    margin-bottom: 20px; /* Spațiu dedesubt */
+}
+
+#searchInput::placeholder {
+    color: #aaa; /* Culoare placeholder */
+}
+
+#searchInput:focus {
+    border-color: #007bff; /* Schimbă culoarea border-ului la focus */
+    outline: none; /* Înlătură outline-ul implicit la focus */
 }
