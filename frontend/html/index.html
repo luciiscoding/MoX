@@ -6,33 +6,6 @@
     <link rel="icon" href="../images/movie-logo.png" type="image/icon">
     <link rel="stylesheet" type="text/css" href="../styles/style.css" />
     <title>MoX</title>
-    <style>
-        #pagination {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-top: 20px;
-        }
-
-        #pagination button {
-            margin: 0 5px;
-            padding: 10px 15px;
-            background-color: #007BFF;
-            color: white;
-            border: none;
-            cursor: pointer;
-            border-radius: 5px;
-        }
-
-        #pagination button:hover {
-            background-color: #0056b3;
-        }
-
-        #pageInfo {
-            margin: 0 10px;
-            color: white;
-        }
-    </style>
 </head>
 <body>
     <nav>
@@ -56,7 +29,9 @@
     <h1 class="header">Movies and TV Shows Explorer</h1> 
 
     <!-- Search Bar -->
-    <input type="text" id="searchInput" placeholder="Search for movies...">
+    <div class="search-container">
+        <input type="text" id="searchInput" placeholder="Search for movies...">
+    </div>
 
     <button id="filterButton">Filter Button</button>
     <div id="filterOptions" style="display: none;">
@@ -76,240 +51,22 @@
         <button id="lastPage">Last</button>
     </div>
 
-    <script>
-        const tmdbApiKey = '95c7c5191fa7aa91931cdcce48430fac';
+    <!-- Pop-up modal for movie info -->
+    <div id="movieInfoModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeModal()">&times;</span>
+            <div id="movieInfoContent"></div>
+        </div>
+    </div>
 
-        function showSidebar() {
-            document.querySelector('.sidebar').style.display = 'block';
-        }
+    <!-- Export options modal -->
+    <div id="exportOptionsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeExportModal()">&times;</span>
+            <div id="exportOptionsContent"></div>
+        </div>
+    </div>
 
-        function hideSidebar() {
-            document.querySelector('.sidebar').style.display = 'none';
-        }
-
-        let currentPage = 1;
-        const limit = 32;
-        let totalPages = 0; // Adăugăm o variabilă pentru a reține numărul total de pagini
-        let allMovies = [];
-
-        document.addEventListener('DOMContentLoaded', () => {
-            fetchMovies(currentPage, limit);
-
-            document.getElementById('firstPage').addEventListener('click', () => {
-                if (currentPage > 1) {
-                    currentPage = 1;
-                    fetchMovies(currentPage, limit);
-                }
-            });
-
-            document.getElementById('prevPage').addEventListener('click', () => {
-                if (currentPage > 1) {
-                    currentPage--;
-                    fetchMovies(currentPage, limit);
-                }
-            });
-
-            document.getElementById('nextPage').addEventListener('click', () => {
-                if (currentPage < totalPages) {
-                    currentPage++;
-                    fetchMovies(currentPage, limit);
-                }
-            });
-
-            document.getElementById('lastPage').addEventListener('click', () => {
-                if (currentPage < totalPages) {
-                    currentPage = totalPages;
-                    fetchMovies(currentPage, limit);
-                }
-            });
-
-            document.getElementById('filterButton').addEventListener('click', () => {
-                const filterOptions = document.getElementById('filterOptions');
-                filterOptions.style.display = filterOptions.style.display === 'none' ? 'block' : 'none';
-            });
-
-            document.querySelectorAll('.filterOption').forEach(button => {
-                button.addEventListener('click', (event) => {
-                    const category = event.target.dataset.category;
-                    filterMovies(category);
-                });
-            });
-
-            document.getElementById('searchInput').addEventListener('input', () => {
-                const query = document.getElementById('searchInput').value.toLowerCase();
-                searchMovies(query);
-            });
-        });
-
-        async function fetchMovies(page, limit) {
-            try {
-                const response = await fetch(`http://127.0.0.1:7081/api/movies/Movies?page=${page}&limit=${limit}`);
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                const data = await response.json();
-                allMovies = data.movies;  // Store all movies for search functionality
-                totalPages = data.totalPages; // Actualizăm numărul total de pagini
-                await fetchAndDisplayMoviesWithImages(allMovies);
-                document.getElementById('pageInfo').innerText = `Page ${page} of ${totalPages}`;
-            } catch (error) {
-                console.error('Error fetching movies:', error);
-
-                // Display error message to the user
-                const cardContainer = document.getElementById('cardContainer');
-                cardContainer.innerHTML = '<p class="error-message">Failed to load movies. Please try again later.</p>';
-            }
-        }
-
-        async function fetchAndDisplayMoviesWithImages(movies) {
-            try {
-                const moviesWithImages = await Promise.all(movies.map(async movie => {
-                    const imageUrl = await fetchMovieImageByTitle(movie.title); // Fetch image by movie title
-                    return { ...movie, imageUrl };
-                }));
-                displayMovies(moviesWithImages);
-            } catch (error) {
-                console.error('Error fetching and displaying movies with images:', error);
-            }
-        }
-
-        async function fetchMovieImageByTitle(title) {
-            try {
-                const searchResponse = await fetch(`https://api.themoviedb.org/3/search/movie?api_key=${tmdbApiKey}&query=${encodeURIComponent(title)}`);
-                if (!searchResponse.ok) {
-                    throw new Error('Failed to search for movie');
-                }
-                const searchData = await searchResponse.json();
-                if (searchData.results.length === 0) {
-                    return '../images/card-picture.avif'; // Default image if no results found
-                }
-                const movieId = searchData.results[0].id;
-                const imageResponse = await fetch(`https://api.themoviedb.org/3/movie/${movieId}/images?api_key=${tmdbApiKey}`);
-                if (!imageResponse.ok) {
-                    throw new Error('Failed to fetch image');
-                }
-                const imageData = await imageResponse.json();
-                const posterPath = imageData.posters.length > 0 ? imageData.posters[0].file_path : null;
-                return posterPath ? `https://image.tmdb.org/t/p/w500${posterPath}` : '../images/card-picture.avif';
-            } catch (error) {
-                console.error(`Error fetching image for movie title ${title}:`, error);
-                return '../images/card-picture.avif';
-            }
-        }
-
-        function displayMovies(movies) {
-            const cardContainer = document.getElementById('cardContainer');
-            cardContainer.innerHTML = '';
-            movies.forEach((movie, index) => {
-                const card = document.createElement('div');
-                card.classList.add('card');
-                card.innerHTML = `
-                    <img src="${movie.imageUrl}" alt="${movie.title}">
-                    <p><strong>Title:</strong> ${movie.title}</p>
-                    <button class="showInfoButton" onclick="toggleInfo(${index})">Show Info</button>
-                    <button class="toggleExportsButton" onclick="toggleExports(${index})">Hide Exports</button>
-                    <div id="info_${index}" style="display: none;">
-                        <p><strong>Description:</strong> ${movie.description}</p>
-                        <p><strong>Cast:</strong> ${movie.cast}</p>
-                        <p><strong>Country:</strong> ${movie.country}</p>
-                        <p><strong>Release Year:</strong> ${movie.release_year}</p>
-                        <p><strong>Rating:</strong> ${movie.rating}</p>
-                        <p><strong>Duration:</strong> ${movie.duration}</p>
-                        <p><strong>Genres:</strong> ${movie.listed_in}</p>
-                    </div>
-                    <div id="exportButtons_${index}" style="display: none;">
-                        <button onclick="exportToCSV('${movie.title}', '${movie.release_year}', '${movie.director}')">Export CSV</button>
-                        <button onclick="exportToWebP('${movie.title}', '${movie.imageUrl}')">Export WebP</button>
-                        <button onclick="exportToSVG('${movie.title}', '${movie.description}', '${movie.release_year}')">Export SVG</button>
-                    </div>
-                `;
-                cardContainer.appendChild(card);
-            });
-        }
-
-        function searchMovies(query) {
-            const filteredMovies = allMovies.filter(movie => movie.title.toLowerCase().includes(query));
-            fetchAndDisplayMoviesWithImages(filteredMovies);
-        }
-
-        function filterMovies(category) {
-            const cards = document.querySelectorAll('.card');
-            cards.forEach(card => {
-                if (card.dataset.category === category || category === 'all') {
-                    card.style.display = 'block';
-                } else {
-                    card.style.display = 'none';
-                }
-            });
-        }
-
-        function toggleInfo(index) {
-            const infoContainer = document.getElementById(`info_${index}`);
-            const button = document.querySelector(`.card:nth-child(${index + 1}) .showInfoButton`);
-
-            if (infoContainer.style.display === 'none') {
-                infoContainer.style.display = 'block';
-                button.innerText = 'Hide Info';
-            } else {
-                infoContainer.style.display = 'none';
-                button.innerText = 'Show Info';
-            }
-        }
-
-        function toggleExports(index) {
-            const exportButtonsContainer = document.getElementById(`exportButtons_${index}`);
-            const toggleButton = document.querySelector(`.card:nth-child(${index + 1}) .toggleExportsButton`);
-            if (exportButtonsContainer.style.display === 'none') {
-                exportButtonsContainer.style.display = 'block';
-                toggleButton.textContent = 'Hide Exports';
-            } else {
-                exportButtonsContainer.style.display = 'none';
-                toggleButton.textContent = 'Show Exports';
-            }
-        }
-
-        function exportToCSV(title, releaseYear, director) {
-            const csvData = `Title,Release Year,Director\n${title},${releaseYear},${director}`;
-            downloadFile(csvData, `${title}_data.csv`, 'text/csv');
-        }
-
-        function exportToWebP(title, imageUrl) {
-            const canvas = document.createElement('canvas');
-            const context = canvas.getContext('2d');
-            const image = new Image();
-            image.crossOrigin = 'Anonymous';
-            image.onload = function() {
-                canvas.width = image.width;
-                canvas.height = image.height;
-                context.drawImage(image, 0, 0);
-                const webpDataURL = canvas.toDataURL('image/webp');
-                downloadFile(webpDataURL, `${title}_image.webp`, 'image/webp');
-            };
-            image.src = imageUrl;
-        }
-
-        function exportToSVG(title, description, releaseYear) {
-            const svgData = `<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200">
-                <text x="10" y="20">Title: ${title}</text>
-                <text x="10" y="40">Description: ${description}</text>
-                <text x="10" y="60">Release Year: ${releaseYear}</text>
-            </svg>`;
-            downloadFile(svgData, `${title}_data.svg`, 'image/svg+xml');
-        }
-
-        function downloadFile(data, filename, type) {
-            const blob = new Blob([data], { type });
-            const url = URL.createObjectURL(blob);
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            document.body.appendChild(a);
-            a.click();
-            setTimeout(() => {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 0);
-        }
-    </script>
+    <script src="../scripts/script.js"></script>
 </body>
 </html>
