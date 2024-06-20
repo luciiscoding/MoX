@@ -14,7 +14,8 @@ const MovieSchema = new Schema({
   rating: String,
   duration: String,
   listed_in: String,
-  description: String
+  description: String,
+  image_url: String
 });
 
 // Create Movie Model

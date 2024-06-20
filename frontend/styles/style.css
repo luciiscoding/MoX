@@ -1,6 +1,7 @@
 * {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 body {
@@ -10,7 +11,7 @@ body {
     background-repeat: no-repeat;
     background-position: center;
     font-family: cursive;
-    padding-top: 50px; /* Adăugăm un padding-top pentru a face spațiu pentru navbar */
+    padding-top: 50px;
 }
 
 nav {
@@ -19,7 +20,7 @@ nav {
     width: 100%;
     background-image: linear-gradient(to top, #240727, #240628, #250529, #25052a, #25042b, #23042a, #220429, #200428, #1d0425, #1a0321, #17031e, #14021a);
     box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
-    z-index: 999; /* Setăm un z-index mai mare */
+    z-index: 999;
 }
 
 nav ul {
@@ -100,8 +101,6 @@ nav li:first-child {
 }
 
 button {
-    left: 5%;
-    top: 80px;
     padding: 1em 2em;
     background-color: #161a20;
     border: none;
@@ -148,32 +147,22 @@ button:hover {
     }
 }
 
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background-image: linear-gradient(to top, #18041a, #160419, #150417, #130316, #110314, #100313, #0e0211, #0d0210, #0c010f, #0c010f, #0b000e, #0a000d);
-    text-align: center;
-    padding: 10px 0;
-    color: white;
-}
 
 #cardContainer {
     margin-top: 10%;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive grid layout */
+    gap: 20px; /* Add spacing between cards */
 }
 
 .card {
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     transition: 0.3s;
-    width: 30%;
-    margin-bottom: 20px;
     color: white;
     flex-direction: column;
-    padding-bottom: 60px;
-    position: relative; /* Facem cardul relativ pentru poziționarea butoanelor */
+    padding-bottom: 20px;
+    display: flex; /* Ensure flexbox layout */
+    justify-content: space-between; /* Ensure proper spacing within the card */
 }
 
 .card img {
@@ -185,6 +174,20 @@ footer {
     box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
 }
 
+.card .buttons {
+    display: flex;
+    justify-content: space-around; /* Align buttons in a row */
+    margin-top: 0.5rem;
+}
+
+.card .buttons button {
+    padding: 0.5rem 1rem;
+    border: none;
+    background-color: #333;
+    color: #fff;
+    cursor: pointer;
+}
+
 #contactUsContent {
     width: 50%; 
     margin: 0 auto;
@@ -192,7 +195,7 @@ footer {
     text-align: center;
 }
 
-/* Added styles */
+/* Filter buttons styling */
 #filterButtonsContainer {
     display: flex;
     flex-direction: column;
@@ -229,42 +232,123 @@ footer {
     }
 }
 
+/* Export buttons styling */
 .exportButtons {
-    position: absolute; /* Poziționăm butoanele absolut în raport cu cardul */
-    bottom: 20px; /* Așezăm butoanele la partea de jos a cardului */
-    right: 20px; /* Așezăm butoanele în dreapta */
+    display: flex;
+    justify-content: space-between; /* Align buttons in a row */
+    margin-top: 0.5rem;
 }
 
 .exportButtons button {
-    padding: 8px 16px;
-    background-color: #161a20;
+    padding: 0.5rem 1rem;
     border: none;
-    color: #f0f0f0;
-    border-radius: 8px;
+    background-color: #333;
+    color: #fff;
     cursor: pointer;
-    margin-right: 10px; /* Adăugăm margin între butoane */
+    margin-right: 0.5rem;
 }
 
 .exportButtons button:last-child {
-    margin-right: 0; /* Eliminăm marginul drept pentru ultimul buton */
+    margin-right: 0; /* Remove margin-right for the last button */
 }
+
+/* Search bar styling */
+.search-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+    margin-top: 20px; /* Adjust position */
+}
+
 #searchInput {
-    width: 20%; /* Lățime completă pentru a se potrivi cu containerul său */
-    padding: 8px 12px; /* Padding pentru a face textul mai lizibil */
-    border: 1px solid #ccc; /* Border subtil */
-    border-radius: 4px; /* Colțuri rotunjite pentru un look modern */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Umbră ușoară pentru adâncime */
-    font-size: 16px; /* Mărimea fontului pentru ușurința citirii */
-    color: #333; /* Culoare text */
-    background-color: #fff; /* Fundal alb */
-    margin-bottom: 20px; /* Spațiu dedesubt */
+    width: 60%; /* Make the search bar wider */
+    padding: 1em 2em;
+    background-color: #161a20;
+    border: none;
+    color: #f0f0f0;
+    border-radius: 1000px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
 
 #searchInput::placeholder {
-    color: #aaa; /* Culoare placeholder */
+    color: #aaa;
 }
 
 #searchInput:focus {
-    border-color: #007bff; /* Schimbă culoarea border-ului la focus */
-    outline: none; /* Înlătură outline-ul implicit la focus */
+    border: 1px solid #007bff;
+    outline: none;
+}
+
+/* Pagination styling */
+#pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+}
+
+#pagination button {
+    margin: 0 5px;
+    padding: 10px 15px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+#pagination button:hover {
+    background-color: #0056b3;
+}
+
+#pageInfo {
+    margin: 0 10px;
+    color: white;
+}
+
+/* Modal styling */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: auto;
+    background-color: rgb(0, 0, 0);
+    background-color: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(5px);
+}
+
+.modal-content {
+    background-color: #fefefe;
+    margin: 15% auto;
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 500px;
+    border-radius: 10px;
+    position: relative;
+    color: #000;
+}
+
+.close-button {
+    color: #aaa;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.close-button:hover,
+.close-button:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
 }
