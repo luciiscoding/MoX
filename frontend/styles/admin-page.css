@@ -1,0 +1,205 @@
+/* General Styles */
+body {
+    min-height: 100vh;
+    background-image: linear-gradient(to top, #18041a, #160419, #150417, #130316, #110314, #100313, #0e0211, #0d0210, #0c010f, #0c010f, #0b000e, #0a000d);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    font-family: cursive;
+    padding-top: 50px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    background-image: linear-gradient(to top, #240727, #240628, #250529, #25052a, #25042b, #23042a, #220429, #200428, #1d0425, #1a0321, #17031e, #14021a);
+    box-shadow: 3px 3px 5px rgba(0, 0, 0, 0.3);
+    z-index: 999;
+}
+
+nav ul {
+    width: 100%;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+nav li {
+    height: 50px;
+}
+
+nav a, nav img {
+    height: 100%;
+    padding: 0 30px;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: #cec8cf;
+}
+
+nav a:hover {
+    background-image: linear-gradient(to top, #4a0651, #490651, #480652, #460652, #450653, #430652, #410550, #3f054f, #3c054c, #3a0449, #370447, #350444);
+}
+
+nav li:first-child {
+    margin-right: auto;
+}
+
+nav li:last-child {
+    margin-left: auto;
+}
+
+/* Header Styles */
+.header {
+    margin-top: 10vh;
+    display: flex;
+    color: white;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    animation: header 1s ease-in-out infinite alternate;
+    font-size: 60px;
+}
+
+@-webkit-keyframes header {
+    from {
+        text-shadow: 0 0 10px #800080, 0 0 20px #800080, 0 0 30px #800080, 0 0 40px #800080, 0 0 50px #800080, 0 0 60px #800080, 0 0 70px #800080;
+    }
+    to {
+        text-shadow: 0 0 20px #9932CC, 0 0 30px #9932CC, 0 0 40px #9932CC, 0 0 50px #9932CC, 0 0 60px #9932CC, 0 0 70px #9932CC;
+    }
+}
+
+/* Container Styles */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin-top: 20px;
+    width: 80%;
+    max-width: 800px;
+    background-color: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.form-container {
+    width: 100%;
+    margin: 20px 0;
+    color: white;
+    text-align: center;
+}
+
+.form-container + .form-container {
+    margin-top: 40px; /* Add spacing between the two forms */
+}
+
+/* Form Styles */
+form {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    align-items: center; /* Center the form elements */
+}
+
+form label {
+    margin-top: 10px;
+    color: white;
+    width: 100%;
+    text-align: left; /* Align text to the left for better readability */
+}
+
+form input, form textarea, form button {
+    width: 100%;
+    padding: 10px;
+    margin-top: 10px; /* Add spacing between form fields */
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: rgba(0, 0, 0, 0.2);
+    color: white;
+}
+
+form button {
+    padding: 1em 2em;
+    background-color: #161a20;
+    border: none;
+    color: #f0f0f0;
+    border-radius: 1000px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+form button::after {
+    content: '';
+    position: absolute;
+    height: 120%;
+    width: 108%;
+    border-radius: 1000px;
+    background-image: linear-gradient(to bottom right, #008cffc6, #e100ffc2);
+    z-index: -1;
+}
+
+form button:hover {
+    filter: brightness(1.1); /* Reduce brightness on hover */
+    box-shadow: 20px 0 50px #008cff, -20px 0 50px #e100ff;
+}
+
+/* Button Styles */
+button {
+    padding: 1em 2em;
+    background-color: #161a20;
+    border: none;
+    color: #f0f0f0;
+    border-radius: 1000px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease, filter 0.3s ease;
+}
+
+button::after {
+    content: '';
+    position: absolute;
+    height: 120%;
+    width: 108%;
+    border-radius: 1000px;
+    background-image: linear-gradient(to bottom right, #008cffc6, #e100ffc2);
+    z-index: -1;
+}
+
+button:hover {
+    filter: brightness(1.1); /* Reduce brightness on hover */
+    box-shadow: 20px 0 50px #008cff, -20px 0 50px #e100ff;
+}
+
+@media (max-width: 600px) {
+    .header {
+        font-size: 40px;
+    }
+
+    .container {
+        width: 90%;
+    }
+
+    form label {
+        font-size: 14px;
+    }
+
+    form input, form textarea, form button {
+        font-size: 14px;
+    }
+}
