@@ -1,4 +1,3 @@
-<!-- frontend/html/admin.html -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -19,7 +18,7 @@
         <input type="email" placeholder="Email" id="email" required>
         <label for="password">Password</label>
         <input type="password" placeholder="Password" id="password" required>
-        <button type="submit" class="button">Log in as admin</button>
+        <button type="submit">Log in as admin</button>
     </form>
     <script>
         document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
@@ -38,7 +37,7 @@
                 if (response.ok) {
                     alert('Admin login successful');
                     localStorage.setItem('isAdmin', 'true'); // Set admin status in local storage
-                    window.location.href = 'index.html'; // Redirect to index page
+                    window.location.href = 'admin-page.html'; // Redirect to index page
                 } else {
                     alert(data.message);
                 }

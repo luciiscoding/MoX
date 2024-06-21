@@ -1,91 +1,98 @@
+/* Combined and updated CSS for style-admin.css */
 
+/* Reset styles */
 *,
 *:before,
-*:after{
+*:after {
     padding: 0;
     margin: 0;
     box-sizing: border-box;
 }
-body{
+
+/* Body styles */
+body {
     height: 100%;
     min-height: 100vh;
     background-image: linear-gradient(to top, #18041a, #160419, #150417, #130316, #110314, #100313, #0e0211, #0d0210, #0c010f, #0c010f, #0b000e, #0a000d);
-    
     font-family: cursive;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
-.background{
+
+/* Background shapes */
+.background {
     width: 430px;
     height: 520px;
     position: absolute;
-    transform: translate(-50%,-50%);
+    transform: translate(-50%, -50%);
     left: 50%;
     top: 50%;
 }
-.background .shape{
+
+.background .shape {
     height: 200px;
     width: 200px;
     position: absolute;
     border-radius: 50%;
 }
-.shape:first-child{
-    background: linear-gradient(
-        #1845ad,
-        #23a2f6
-    );
+
+.shape:first-child {
+    background: linear-gradient(#1845ad, #23a2f6);
     left: -80px;
     top: -80px;
 }
-.shape:last-child{
-    background: linear-gradient(
-        to right,
-        #ff512f,
-        #f09819
-    );
+
+.shape:last-child {
+    background: linear-gradient(to right, #ff512f, #f09819);
     right: -30px;
     bottom: -80px;
 }
-form{
+
+/* Form styles */
+form {
     height: 520px;
     width: 400px;
-    background-color: rgba(255,255,255,0.13);
-    position: absolute;
-    transform: translate(-50%,-50%);
-    top: 50%;
-    left: 50%;
+    background-color: rgba(255, 255, 255, 0.13);
+    position: relative;
     border-radius: 10px;
     backdrop-filter: blur(10px);
-    border: 2px solid rgba(255,255,255,0.1);
-    box-shadow: 0 0 40px rgba(8,7,16,0.6);
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 0 40px rgba(8, 7, 16, 0.6);
     padding: 50px 35px;
+    display: flex;
+    flex-direction: column;
+   
+    margin-top: 50px; /* Move form slightly down */
 }
 
-form *{
-    font-family: 'Poppins',sans-serif;
+form * {
+    font-family: 'Poppins', sans-serif;
     color: #ffffff;
     letter-spacing: 0.5px;
     outline: none;
     border: none;
 }
 
-form h3{
+form h3 {
     font-size: 32px;
     font-weight: 500;
     line-height: 42px;
     text-align: center;
 }
 
-label{
+label {
     display: block;
     margin-top: 30px;
     font-size: 16px;
     font-weight: 500;
 }
 
-input{
+input {
     display: block;
     height: 50px;
     width: 100%;
-    background-color: rgba(255,255,255,0.07);
+    background-color: rgba(255, 255, 255, 0.07);
     border-radius: 3px;
     padding: 0 10px;
     margin-top: 8px;
@@ -93,23 +100,70 @@ input{
     font-weight: 300;
 }
 
-::placeholder{
+::placeholder {
     color: #e5e5e5;
 }
 
+/* Button styles */
+button {
+    margin-top: 70px;
+    padding: 1em 2em;
+    background-color: #161a20;
+    border: none;
+    color: #f0f0f0;
+    border-radius: 1000px;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    transition: box-shadow 0.3s ease-in-out;
+}
 
+button::after {
+    content: '';
+    position: absolute;
+    height: 120%;
+    width: 108%;
+    border-radius: 1000px;
+    background-image: linear-gradient(to bottom right, #008cffc6, #e100ffc2);
+    z-index: -1;
+}
 
-a{
+button:hover {
+    z-index: 0;
+    box-shadow: 40px 0 100px #008cff, -40px 0 100px #e100ff;
+}
+
+/* Link styles */
+a {
     display: inline-block;
-    padding: 10px 20px;
-    background-color: #007BFF;
-    color: white;
+    padding: 1em 2em;
+    background-color: #161a20;
+    color: #f0f0f0;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 1000px;
     border: none;
     cursor: pointer;
     text-align: center;
     margin-top: 50px;
     font-size: 18px;
     font-weight: 600;
+    position: relative;
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+a::after {
+    content: '';
+    position: absolute;
+    height: 120%;
+    width: 108%;
+    border-radius: 1000px;
+    background-image: linear-gradient(to bottom right, #008cffc6, #e100ffc2);
+    z-index: -1;
+}
+
+a:hover {
+    z-index: 0;
+    box-shadow: 40px 0 100px #008cff, -40px 0 100px #e100ff;
 }
