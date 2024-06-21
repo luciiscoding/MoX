@@ -1,4 +1,3 @@
-// script.js
 const tmdbApiKey = '95c7c5191fa7aa91931cdcce48430fac';
 
 function showSidebar() {
@@ -14,34 +13,34 @@ const limit = 32;
 let totalPages = 0;
 let allMovies = [];
 
-document.addEventListener('DOMContentLoaded', () => {
-    fetchMovies(currentPage, limit);
+document.addEventListener('DOMContentLoaded', async () => {
+    await fetchAllMovies();
 
     document.getElementById('firstPage').addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage = 1;
-            fetchMovies(currentPage, limit);
+            fetchAndDisplayMovies(currentPage, limit);
         }
     });
 
     document.getElementById('prevPage').addEventListener('click', () => {
         if (currentPage > 1) {
             currentPage--;
-            fetchMovies(currentPage, limit);
+            fetchAndDisplayMovies(currentPage, limit);
         }
     });
 
     document.getElementById('nextPage').addEventListener('click', () => {
         if (currentPage < totalPages) {
             currentPage++;
-            fetchMovies(currentPage, limit);
+            fetchAndDisplayMovies(currentPage, limit);
         }
     });
 
     document.getElementById('lastPage').addEventListener('click', () => {
         if (currentPage < totalPages) {
             currentPage = totalPages;
-            fetchMovies(currentPage, limit);
+            fetchAndDisplayMovies(currentPage, limit);
         }
     });
 
@@ -57,23 +56,51 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    document.getElementById('searchInput').addEventListener('input', () => {
+    document.getElementById('searchButton').addEventListener('click', () => {
         const query = document.getElementById('searchInput').value.toLowerCase();
         searchMovies(query);
     });
 });
 
-async function fetchMovies(page, limit) {
+async function fetchAllMovies() {
+    try {
+        let page = 1;
+        let movies = [];
+        let response;
+
+        do {
+            response = await fetch(`http://127.0.0.1:7081/api/movies/Movies?page=${page}&limit=${limit}`);
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
+            }
+            const data = await response.json();
+            const newMovies = data.movies.filter(movie => movie.imageUrl !== '../images/card-picture.avif');
+            movies = movies.concat(newMovies);
+            totalPages = data.totalPages;
+            page++;
+        } while (page <= totalPages);
+
+        allMovies = movies;
+        await fetchAndDisplayMovies(currentPage, limit);
+        document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${totalPages}`;
+    } catch (error) {
+        console.error('Error fetching movies:', error);
+        const cardContainer = document.getElementById('cardContainer');
+        cardContainer.innerHTML = '<p class="error-message">Failed to load movies. Please try again later.</p>';
+    }
+}
+
+async function fetchAndDisplayMovies(page, limit) {
     try {
         const response = await fetch(`http://127.0.0.1:7081/api/movies/Movies?page=${page}&limit=${limit}`);
         if (!response.ok) {
             throw new Error('Network response was not ok');
         }
         const data = await response.json();
-        allMovies = data.movies.filter(movie => movie.imageUrl !== '../images/card-picture.avif');
-        totalPages = data.totalPages;
-        await fetchAndDisplayMoviesWithImages(allMovies);
-        document.getElementById('pageInfo').innerText = `Page ${page} of ${totalPages}`;
+        const newMovies = data.movies.filter(movie => movie.imageUrl !== '../images/card-picture.avif');
+        await fetchAndDisplayMoviesWithImages(newMovies); // Display only new movies
+        currentPage = page;
+        document.getElementById('pageInfo').innerText = `Page ${currentPage} of ${totalPages}`;
     } catch (error) {
         console.error('Error fetching movies:', error);
         const cardContainer = document.getElementById('cardContainer');
@@ -83,6 +110,11 @@ async function fetchMovies(page, limit) {
 
 async function fetchAndDisplayMoviesWithImages(movies) {
     try {
+        if (movies.length === 0) {
+            const cardContainer = document.getElementById('cardContainer');
+            cardContainer.innerHTML = '<p class="no-results-message">No movies found.</p>';
+            return;
+        }
         const moviesWithImages = await Promise.all(movies.map(async movie => {
             const imageUrl = await fetchMovieImageByTitle(movie.title);
             return { ...movie, imageUrl };
@@ -206,30 +238,28 @@ function exportToCSV(index) {
 }
 
 function exportToWebP(index) {
-  const movie = allMovies[index];
-  console.log('Exporting movie:', movie); // Debug log
-  if (!movie.imageUrl || movie.imageUrl === '../images/card-picture.avif') {
-      console.error('No valid image URL found for this movie.');
-      return;
-  }
-  const canvas = document.createElement('canvas');
-  const context = canvas.getContext('2d');
-  const image = new Image();
-  image.crossOrigin = 'Anonymous';
-  image.onload = function() {
-      canvas.width = image.width;
-      canvas.height = image.height;
-      context.drawImage(image, 0, 0);
-      const webpDataURL = canvas.toDataURL('image/webp');
-      downloadFile(webpDataURL, `${movie.title}_image.webp`, 'image/webp');
-  };
-  image.onerror = function() {
-      console.error('Failed to load image.');
-  };
-  image.src = movie.imageUrl;
+    const movie = allMovies[index];
+    console.log('Exporting movie:', movie); // Debug log
+    if (!movie.imageUrl || movie.imageUrl === '../images/card-picture.avif') {
+        console.error('No valid image URL found for this movie.');
+        return;
+    }
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    const image = new Image();
+    image.crossOrigin = 'Anonymous';
+    image.onload = function() {
+        canvas.width = image.width;
+        canvas.height = image.height;
+        context.drawImage(image, 0, 0);
+        const webpDataURL = canvas.toDataURL('image/webp');
+        downloadFile(webpDataURL, `${movie.title}_image.webp`, 'image/webp');
+    };
+    image.onerror = function() {
+        console.error('Failed to load image.');
+    };
+    image.src = movie.imageUrl;
 }
-
-
 
 function exportToSVG(index) {
     const movie = allMovies[index];
