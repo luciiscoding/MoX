@@ -1,4 +1,3 @@
-// backend/controllers/movie-controller.js
 const url = require('url');
 const Movie = require('../models/movie');
 
@@ -81,9 +80,18 @@ module.exports = {
     }
   },
 
-  deleteMovie: async (req, res, id) => {
+  deleteMovie: async (req, res) => {
     try {
-      const deletedMovie = await Movie.findByIdAndDelete(id);
+      const parsedUrl = url.parse(req.url, true);
+      const title = parsedUrl.query.title;
+
+      if (!title) {
+        res.writeHead(400, { 'Content-Type': 'text/plain' });
+        res.end('Title is required');
+        return;
+      }
+
+      const deletedMovie = await Movie.findOneAndDelete({ title });
       if (deletedMovie) {
         res.writeHead(204);
         res.end();

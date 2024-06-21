@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../images/movie-logo.png" type="image/icon">
+    <link rel="stylesheet" type="text/css" href="../styles/admin-page.css" />
+    <title>Admin Movie Management</title>
+</head>
+<body>
+    <nav>
+        <ul>
+            <li><img src="../images/movie-logo.png" alt="logo"></li>
+            <li><a href="login.html">Logout</a></li>
+        </ul>
+    </nav>
+
+    <h1 class="header">Welcome admin, delete or upload a movie</h1> 
+    <div class="background">
+        <div class="shape"></div>
+        <div class="shape"></div>
+    </div>
+    <div id="adminContent" class="container">
+        <div class="form-container">
+            <h3>Upload New Movie</h3>
+            <form id="uploadMovieForm">
+                <label for="title">Title</label>
+                <input type="text" id="title" required>
+                <label for="description">Description</label>
+                <textarea id="description" required></textarea>
+                <label for="release_year">Release Year</label>
+                <input type="number" id="release_year" required>
+                <label for="director">Director</label>
+                <input type="text" id="director" required>
+                <label for="cast">Cast</label>
+                <input type="text" id="cast" required>
+                <label for="country">Country</label>
+                <input type="text" id="country" required>
+                <label for="rating">Rating</label>
+                <input type="number" step="0.1" id="rating" required>
+                <label for="duration">Duration (mins)</label>
+                <input type="number" id="duration" required>
+                <label for="listed_in">Genres</label>
+                <input type="text" id="listed_in" required>
+                <label for="imageUrl">Image URL</label>
+                <input type="url" id="imageUrl" required>
+                <button type="submit">Upload Movie</button>
+            </form>
+        </div>
+        <div class="form-container">
+            <h3>Delete Movie</h3>
+            <form id="deleteMovieForm">
+                <label for="deleteTitle">Title</label>
+                <input type="text" id="deleteTitle" required>
+                <button type="submit">Delete Movie</button>
+            </form>
+        </div>
+    </div>
+    <script src="../scripts/admin-page.js"></script>
+</body>
+</html>
