@@ -1,7 +1,7 @@
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+   /* box-sizing: border-box; */
 }
 
 body {
@@ -351,4 +351,21 @@ button:hover {
     color: black;
     text-decoration: none;
     cursor: pointer;
+}
+/* Stilizare pentru input-urile de ani */
+#startYearInput,
+#endYearInput {
+    width: auto; /* Lățime fixă pentru a se potrivi input-ului */
+    padding: 6px; /* Spațiere interioară */
+    margin-right: 10px; /* Margine dreapta între input-uri */
+    border: 1px solid #ccc; /* Bordură subțire */
+    border-radius: 4px; /* Colțuri rotunjite */
+}
+
+/* Stilizare pentru selectorul de sortare */
+#orderBySelect {
+    padding: 8px; /* Spațiere interioară */
+    border: 1px solid #ccc; /* Bordură subțire */
+    border-radius: 4px; /* Colțuri rotunjite */
+    margin-right: 10px; /* Margine dreapta */
 }

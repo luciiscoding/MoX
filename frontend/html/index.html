@@ -35,12 +35,6 @@
     </div>
 
     <button id="filterButton">Filter Button</button>
-    <div id="filterOptions" style="display: none;">
-        <div id="filterButtonsContainer">
-            <button class="filterOption" data-category="category1">Netflix</button>
-            <button class="filterOption" data-category="category2">Disney</button>
-        </div>
-    </div>
     
     <br>
     <div id="cardContainer"></div>
@@ -65,6 +59,78 @@
         <div class="modal-content">
             <span class="close-button" onclick="closeExportModal()">&times;</span>
             <div id="exportOptionsContent"></div>
+        </div>
+    </div>
+
+    <!-- Filter options modal -->
+    <div id="filterOptionsModal" class="modal">
+        <div class="modal-content">
+            <span class="close-button" onclick="closeFilterModal()">&times;</span>
+            <div id="filterOptionsContent">
+                <div>
+                    <label for="startYearInput">Start Year:</label>
+                    <input type="number" id="startYearInput" placeholder="Enter start year">
+                </div>
+                <div>
+                    <label for="endYearInput">End Year:</label>
+                    <input type="number" id="endYearInput" placeholder="Enter end year">
+                </div>
+                <div>
+                <div>
+                    <label>Genres:</label>
+                    <div>
+                        <input type="checkbox" id="genreAction" value="Action">
+                        <label for="genreAction">Action</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="genreAdventure" value="Adventure">
+                        <label for="genreAdventure">Adventure</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="genreAnimation" value="Animation">
+                        <label for="genreAnimation">Animation</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="genreBiographical" value="Biographical">
+                        <label for="genreBiographical">Biographical</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="genreComedy" value="Comedy">
+                        <label for="genreComedy">Comedy</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="genreDocumentary" value="Documentary">
+                        <label for="genreDocumentary">Documentary</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="genreDrama" value="Drama">
+                        <label for="genreDrama">Drama</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="genreFamily" value="Family">
+                        <label for="genreFamily">Family</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="genreFantasy" value="Fantasy">
+                        <label for="genreFantasy">Fantasy</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="genreSuperhero" value="Superhero">
+                        <label for="genreSuperhero">Superhero</label>
+                    </div>
+                    <!-- Add more genres as needed -->
+                </div>
+                <label for="orderBySelect">Order By:</label>
+                <select id="orderBySelect">
+                    <option value="relevance">Relevance</option>
+                    <option value="year">Year</option>
+                    <option value="alpha">Alphabetical</option>
+                    <option value="reverseAlpha">Reverse Alphabetical</option>
+
+                </select>
+                <button id="applyFilterButton">Apply Filter</button>
+                <button id="clearFiltersButton" onclick="clearFilters()">Clear All Filters</button>
+            </div>
         </div>
     </div>
 
