@@ -20,32 +20,6 @@
         <input type="password" placeholder="Password" id="password" required>
         <button type="submit">Log in as admin</button>
     </form>
-    <script>
-        document.getElementById('adminLoginForm').addEventListener('submit', async (e) => {
-            e.preventDefault();
-            const email = document.getElementById('email').value;
-            const password = document.getElementById('password').value;
-            try {
-                const response = await fetch('http://localhost:7081/api/users/login', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    credentials: 'include', // Include cookies in the request
-                    body: JSON.stringify({ email, password })
-                });
-                const data = await response.json();
-                if (response.ok) {
-                    alert('Admin login successful');
-                    localStorage.setItem('isAdmin', 'true'); // Set admin status in local storage
-                    window.location.href = 'admin-page.html'; // Redirect to index page
-                } else {
-                    alert(data.message);
-                }
-            } catch (error) {
-                alert('An error occurred: ' + error.message);
-            }
-        });
-    </script>
+    <script src="../scripts/admin.js"></script> <!-- Include your admin.js script here -->
 </body>
 </html>
