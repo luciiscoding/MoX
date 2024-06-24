@@ -183,7 +183,7 @@
     function searchMovies(query) {
         let filteredMovies = allMovies;
 
-        const yearElement = document.getElementById('yearInput'); // Added check for yearInput element
+        const yearElement = document.getElementById('yearInput'); 
         if (yearElement) {
             const year = yearElement.value;
             if (year) {
@@ -306,7 +306,7 @@
         const movie = displayedMovies[index];
 
         try {
-            // 1. Create SVG content with movie information
+           
             const svgData = `
                 <svg xmlns="http://www.w3.org/2000/svg" width="600" height="400">
                     <!-- Background rectangle -->
@@ -322,7 +322,7 @@
                     <text x="300" y="220" font-size="14">Genres: ${movie.listed_in}</text>
                 </svg>`;
 
-            // 2. Initiate download
+          
             downloadFileSVG(svgData, `${movie.title}_info.svg`, 'image/svg+xml');
         } catch (error) {
             console.error('Error exporting to SVG:', error);
@@ -330,7 +330,7 @@
     }
 
     function createSvgContent(movie) {
-        // SVG styles
+     
         const svgStyles = `
             <style>
                 .card {
@@ -396,8 +396,7 @@
     }
 
     function preparePieChartData(movie) {
-        // Implement logic to prepare pie chart data from the movie object
-        // Example: Assume pieChartData is an array of objects with 'label' and 'value'
+       
         const pieChartData = [
             { label: 'Category A', value: 30 },
             { label: 'Category B', value: 50 },
@@ -411,50 +410,50 @@
         const total = data.reduce((acc, item) => acc + item.value, 0);
         let startAngle = -Math.PI / 2;
 
-        // Determine the canvas size based on content length
-        const canvasWidth = 600; // Base canvas width
-        const canvasHeight = 600 + data.length * 30; // Base canvas height plus extra for text
+        
+        const canvasWidth = 600; 
+        const canvasHeight = 600 + data.length * 30; 
 
-        // Set canvas dimensions
+        
         ctx.canvas.width = canvasWidth;
         ctx.canvas.height = canvasHeight;
 
-        // Draw pie segments and labels
+       
         data.forEach((item, index) => {
             const angle = (item.value / total) * 2 * Math.PI;
             ctx.beginPath();
-            ctx.moveTo(canvasWidth / 2, canvasHeight / 2); // Center of the canvas
+            ctx.moveTo(canvasWidth / 2, canvasHeight / 2); 
             ctx.arc(canvasWidth / 2, canvasHeight / 2, 250, startAngle, startAngle + angle);
             const segmentColor = getRandomColor();
-            ctx.fillStyle = segmentColor; // Use same color for segment
+            ctx.fillStyle = segmentColor; 
             ctx.fill();
             ctx.closePath();
 
-            // Calculate position for text label
+           
             const labelAngle = startAngle + angle / 2;
-            const labelRadius = 180; // Distance from center
+            const labelRadius = 180; 
             const labelX = canvasWidth / 2 + labelRadius * Math.cos(labelAngle);
             const labelY = canvasHeight / 2 + labelRadius * Math.sin(labelAngle);
 
-            // Draw text label (replace "Category X" with movie-specific info)
+          
             ctx.font = '14px Arial';
             ctx.fillStyle = 'black';
             ctx.textAlign = 'center';
 
-            // Determine what info to display for each segment
+         
             let labelText;
             switch (index) {
                 case 0:
                     labelText = `Genre: ${movie.release_year}`;
                     break;
                 case 1:
-                    labelText = `Rating: ${getRandomInt(1, 10)}`; // Random rating between 1 and 10
+                    labelText = `Rating: ${getRandomInt(1, 10)}`; 
                     break;
                 case 2:
                     labelText = `Duration: ${movie.duration}`;
                     break;
                 default:
-                    labelText = `Info ${index + 1}`; // Replace with relevant info from the movie
+                    labelText = `Info ${index + 1}`; 
                     break;
             }
             
@@ -463,15 +462,15 @@
             startAngle += angle;
         });
 
-        // Add movie title at the top
+       
         ctx.font = '20px Arial';
-        ctx.fillText(movie.title, canvasWidth / 2, 50); // Display movie title
+        ctx.fillText(movie.title, canvasWidth / 2, 50); 
 
-        // Add other movie information at the bottom
+       
         ctx.font = '16px Arial';
-        ctx.fillText(`Rating: ${getRandomInt(1, 10)}`, canvasWidth / 2, canvasHeight - 70); // Random rating between 1 and 10
-        ctx.fillText(`Duration: ${movie.duration} min`, canvasWidth / 2, canvasHeight - 50); // Display movie duration
-        ctx.fillText(`Country: ${movie.country}`, canvasWidth / 2, canvasHeight - 30); // Display movie country
+        ctx.fillText(`Rating: ${getRandomInt(1, 10)}`, canvasWidth / 2, canvasHeight - 70); 
+        ctx.fillText(`Duration: ${movie.duration} min`, canvasWidth / 2, canvasHeight - 50); 
+        ctx.fillText(`Country: ${movie.country}`, canvasWidth / 2, canvasHeight - 30); 
     }
 
     function getRandomInt(min, max) {
@@ -484,20 +483,20 @@
         const movie = displayedMovies[index];
 
         try {
-            // 1. Prepare the data for the pie chart
+           
             const data = preparePieChartData(movie);
 
-            // 2. Create a canvas and draw the pie chart with movie information
+            
             const canvas = document.createElement('canvas');
             canvas.width = 800;
             canvas.height = 800;
             const ctx = canvas.getContext('2d');
-            drawPieChart(ctx, data, movie); // Pass movie object to include details in chart
+            drawPieChart(ctx, data, movie); 
 
-            // 3. Convert canvas to WebP
+            
             const webpData = await encodeWebP(canvas);
 
-            // 4. Trigger download
+           
             downloadFile(webpData, `${movie.title}_chart.webp`, 'image/webp');
         } catch (error) {
             console.error('Error exporting to WebP:', error);

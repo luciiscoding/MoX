@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../images/movie-logo.png" type="image/icon">
-    <link rel="stylesheet" type="text/css" href="../styles/style-register.css" />
+    <link rel="stylesheet" type="text/css" href="../styles/style-register.css" >
     <title>Register</title>
 </head>
 <body>
@@ -41,13 +41,13 @@
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    credentials: 'include', // Include cookies in the request
+                    credentials: 'include', 
                     body: JSON.stringify({ email, username, password })
                 });
                 const data = await response.json();
                 if (response.ok) {
                     alert('Registration successful');
-                    window.location.href = 'login.html'; // Redirect to login page
+                    window.location.href = 'login.html'; 
                 } else {
                     alert(data.message);
                 }

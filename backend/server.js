@@ -1,4 +1,4 @@
-// backend/server.js
+
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
@@ -12,9 +12,9 @@ const authMiddleware = require('./middleware/authMiddleware');
 
 const PORT = 7081;
 const MONGOURL = "mongodb://localhost:27017/MoX";
-const FRONTEND_ORIGIN = 'http://127.0.0.1:5501'; // Update to your frontend URL
+const FRONTEND_ORIGIN = 'http://127.0.0.1:5501'; 
 
-// Connect to MongoDB
+
 mongoose.connect(MONGOURL);
 
 mongoose.connection.on('connected', () => {
@@ -25,7 +25,7 @@ mongoose.connection.on('error', (err) => {
   console.error(`Failed to connect to MongoDB: ${err.message}`);
 });
 
-// Function to serve static files
+// func to serve static files
 const serveStaticFile = (filePath, contentType, res) => {
   fs.readFile(filePath, (err, data) => {
     if (err) {
@@ -38,7 +38,7 @@ const serveStaticFile = (filePath, contentType, res) => {
   });
 };
 
-// CORS middleware
+
 const setCorsHeaders = (req, res) => {
   const origin = req.headers.origin;
   console.log(`Request Origin: ${origin}`);
@@ -51,12 +51,12 @@ const setCorsHeaders = (req, res) => {
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
     res.end();
-    return false; // Skip the next handler
+    return false; 
   }
-  return true; // Continue to the next handler
+  return true; 
 };
 
-// Function to parse cookies
+
 const parseCookies = (cookieHeader) => {
   const cookies = {};
   cookieHeader && cookieHeader.split(';').forEach(cookie => {
@@ -66,17 +66,17 @@ const parseCookies = (cookieHeader) => {
   return cookies;
 };
 
-// Function to handle API requests
+
 const handleApiRequest = (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const pathParts = parsedUrl.pathname.split('/').filter(Boolean);
   const id = pathParts.length === 2 ? pathParts[1] : null;
 
-  if (!setCorsHeaders(req, res)) return; // Set CORS headers
+  if (!setCorsHeaders(req, res)) return; 
 
-  req.cookies = parseCookies(req.headers.cookie); // Parse cookies
+  req.cookies = parseCookies(req.headers.cookie); 
 
-  // Parse JSON body
+  
   let body = '';
   req.on('data', chunk => {
     body += chunk.toString();
@@ -130,7 +130,7 @@ const handleApiRequest = (req, res) => {
   });
 };
 
-// Function to handle view requests
+
 const handleViewRequest = (req, res) => {
   const parsedUrl = url.parse(req.url, true);
   const pathname = parsedUrl.pathname === '/' ? '/home.html' : parsedUrl.pathname;
@@ -162,7 +162,7 @@ const handleViewRequest = (req, res) => {
   serveStaticFile(filePath, contentType, res);
 };
 
-// Create server and handle requests
+
 const server = http.createServer((req, res) => {
   if (req.url.startsWith('/api')) {
     handleApiRequest(req, res);

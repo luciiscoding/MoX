@@ -1,8 +1,8 @@
-// backend/models/movie.js
+
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-// Define Movie Schema
+
 const MovieSchema = new Schema({
   show_id: String,
   type: String,

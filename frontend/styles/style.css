@@ -1,7 +1,6 @@
 * {
     margin: 0;
     padding: 0;
-   /* box-sizing: border-box; */
 }
 
 body {
@@ -99,6 +98,17 @@ nav li:first-child {
         width: 100%;
     }
 }
+#aboutUsContent {
+    color: white;
+    font-size: 20px;
+
+    width: 80%;
+
+      width: 80%;
+
+    margin: 0 auto;
+    word-spacing: 8px;
+}
 
 button {
     padding: 1em 2em;
@@ -195,7 +205,7 @@ button:hover {
     text-align: center;
 }
 
-/* Filter buttons styling */
+
 #filterButtonsContainer {
     display: flex;
     flex-direction: column;
@@ -206,13 +216,13 @@ button:hover {
 .filterOption {
     padding: 10px 20px;
     border: none;
-    border-radius: 20px; /* Make buttons rounded */
+    border-radius: 20px; 
     background-color: #444;
     color: white;
     cursor: pointer;
-    margin-top: 5px; /* Add space between buttons */
+    margin-top: 5px; 
     width: auto;
-    max-width: 150px; /* Set maximum width */
+    max-width: 150px; 
 }
 
 .filterOption:hover {
@@ -232,10 +242,10 @@ button:hover {
     }
 }
 
-/* Export buttons styling */
+
 .exportButtons {
     display: flex;
-    justify-content: space-between; /* Align buttons in a row */
+    justify-content: space-between; 
     margin-top: 0.5rem;
 }
 
@@ -249,22 +259,22 @@ button:hover {
 }
 
 .exportButtons button:last-child {
-    margin-right: 0; /* Remove margin-right for the last button */
+    margin-right: 0; 
 }
 
-/* Search bar styling */
+
 .search-container {
     display: flex;
     justify-content: center;
     align-items: center;
     margin-bottom: -90px;
-    margin-top: 90px; /* Adjust position */
+    margin-top: 90px; 
     margin-left: 40px;
     margin-right: 40px;
 }
 
 #searchInput {
-    width: 60%; /* Make the search bar wider */
+    width: 60%; 
     padding: 1em 2em;
     background-color: #161a20;
     border: none;
@@ -287,7 +297,7 @@ button:hover {
     outline: none;
 }
 
-/* Pagination styling */
+
 #pagination {
     display: flex;
     justify-content: center;
@@ -314,7 +324,7 @@ button:hover {
     color: white;
 }
 
-/* Modal styling */
+
 .modal {
     display: none;
     position: fixed;
@@ -354,20 +364,20 @@ button:hover {
     text-decoration: none;
     cursor: pointer;
 }
-/* Stilizare pentru input-urile de ani */
+
 #startYearInput,
 #endYearInput {
-    width: auto; /* Lățime fixă pentru a se potrivi input-ului */
-    padding: 6px; /* Spațiere interioară */
-    margin-right: 10px; /* Margine dreapta între input-uri */
-    border: 1px solid #ccc; /* Bordură subțire */
-    border-radius: 4px; /* Colțuri rotunjite */
+    width: auto; 
+    padding: 6px; 
+    margin-right: 10px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
 }
 
-/* Stilizare pentru selectorul de sortare */
+
 #orderBySelect {
-    padding: 8px; /* Spațiere interioară */
-    border: 1px solid #ccc; /* Bordură subțire */
-    border-radius: 4px; /* Colțuri rotunjite */
-    margin-right: 10px; /* Margine dreapta */
+    padding: 8px; 
+    border: 1px solid #ccc; 
+    border-radius: 4px; 
+    margin-right: 10px; 
 }
