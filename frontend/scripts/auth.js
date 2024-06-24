@@ -21,11 +21,14 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('.logout').forEach(function(element) {
         element.addEventListener('click', function() {
             deleteCookie('authenticated'); // Replace 'authenticated' with your actual cookie name
+            window.location.href = 'login.html'; // Redirect to login page after logout
         });
     });
 
     // Handle back button navigation
-    window.addEventListener('beforeunload', function() {
-        deleteCookie('authenticated'); // Replace 'authenticated' with your actual cookie name
-    });
+    // window.addEventListener('beforeunload', function() {
+    //     deleteCookie('authenticated'); // Replace 'authenticated' with your actual cookie name
+    // });
 });
+
+
