@@ -1,14 +1,18 @@
-// server.js
+// backend/server.js
 const http = require('http');
 const url = require('url');
 const fs = require('fs');
 const path = require('path');
 const mongoose = require('mongoose');
 const movieController = require('./controllers/movie-controller');
-const userController = require('./controllers/user-controller'); // Include the user controller
+const userController = require('./controllers/user-controller');
+const apiController = require('./controllers/api-controller');
+const viewController = require('./views/view-controller');
+const authMiddleware = require('./middleware/authMiddleware');
 
 const PORT = 7081;
 const MONGOURL = "mongodb://localhost:27017/MoX";
+const FRONTEND_ORIGIN = 'http://127.0.0.1:5501'; // Update to your frontend URL
 
 // Connect to MongoDB
 mongoose.connect(MONGOURL);
@@ -36,15 +40,30 @@ const serveStaticFile = (filePath, contentType, res) => {
 
 // CORS middleware
 const setCorsHeaders = (req, res) => {
-  res.setHeader('Access-Control-Allow-Origin', '*');
+  const origin = req.headers.origin;
+  console.log(`Request Origin: ${origin}`);
+  if (origin === FRONTEND_ORIGIN) {
+    res.setHeader('Access-Control-Allow-Origin', FRONTEND_ORIGIN);
+  }
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
     res.end();
     return false; // Skip the next handler
   }
   return true; // Continue to the next handler
+};
+
+// Function to parse cookies
+const parseCookies = (cookieHeader) => {
+  const cookies = {};
+  cookieHeader && cookieHeader.split(';').forEach(cookie => {
+    const parts = cookie.split('=');
+    cookies[parts.shift().trim()] = decodeURI(parts.join('='));
+  });
+  return cookies;
 };
 
 // Function to handle API requests
@@ -54,6 +73,8 @@ const handleApiRequest = (req, res) => {
   const id = pathParts.length === 2 ? pathParts[1] : null;
 
   if (!setCorsHeaders(req, res)) return; // Set CORS headers
+
+  req.cookies = parseCookies(req.headers.cookie); // Parse cookies
 
   // Parse JSON body
   let body = '';
@@ -79,14 +100,24 @@ const handleApiRequest = (req, res) => {
         } else {
           movieController.getMovies(req, res);
         }
+      } else if (pathParts[1] === 'users') {
+        if (id) {
+          apiController.getUser(req, res, id);
+        } else {
+          apiController.getUsers(req, res);
+        }
       }
     } else if (req.method === 'POST' && pathParts[0] === 'api') {
       if (pathParts[1] === 'movies') {
         movieController.createMovie(req, res);
-      } else if (pathParts[1] === 'users' && pathParts[2] === 'login') {
-        userController.login(req, res);
-      } else if (pathParts[1] === 'users' && pathParts[2] === 'register') {
-        userController.register(req, res);
+      } else if (pathParts[1] === 'users') {
+        if (pathParts[2] === 'login') {
+          userController.login(req, res);
+        } else if (pathParts[2] === 'register') {
+          userController.register(req, res);
+        } else {
+          apiController.createUser(req, res);
+        }
       }
     } else if (req.method === 'PUT' && pathParts[0] === 'api' && pathParts[1] === 'movies' && id) {
       movieController.updateMovie(req, res, id);
