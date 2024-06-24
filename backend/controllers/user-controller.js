@@ -35,6 +35,22 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const { email, password } = req.body;
+    
+    if (email === 'admin@gmail.com' && password === 'admin123') {
+        // Handle admin login
+        const sessionId = sessionIdGenerator();
+        storeSessions[sessionId] = { userId: 'admin', timestamp: Date.now() };
+
+        res.setHeader('Set-Cookie', [
+          cookie.serialize('sessionId', sessionId, { httpOnly: true, path: '/', sameSite: 'Lax', secure: true }),
+          cookie.serialize('authenticated', 'true', { path: '/', sameSite: 'Lax', secure: true })
+        ]);
+
+        res.writeHead(200, { 'Content-Type': 'application/json' });
+        res.end(JSON.stringify({ token: sessionId, isAdmin: true }));
+        return;
+    }
+    
     const user = await User.findOne({ email });
     if (!user || !(await bcrypt.compare(password, user.password))) {
       res.writeHead(401, { 'Content-Type': 'application/json' });
@@ -50,12 +66,14 @@ const login = async (req, res) => {
     ]);
 
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ token: sessionId }));
+    res.end(JSON.stringify({ token: sessionId, isAdmin: false }));
   } catch (err) {
     res.writeHead(500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: 'Internal Server Error' }));
   }
 };
+
+
 
 module.exports = {
   register,
