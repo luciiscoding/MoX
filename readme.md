@@ -56,9 +56,9 @@
     <p><strong>Product Name:</strong> Movies and TV Shows Explorer</p>
     <p><strong>Revision/Release Number:</strong>  1.0</p>
 
-    `<h1 id="1.0" class="purple-text">`1. Introduction`</h1>`
-    `<h2 id="1.1">`1.1 Intended Audience:`</h2>`
-    `<p>`The Software Requirements Specification (SRS) document for the Movies and TV Shows Exploreris intended for:`</p>`
+    <h1 id="1.0" class="purple-text">`1. Introduction`</h1>`
+    <h2 id="1.1">`1.1 Intended Audience:`</h2>`
+    <p>The Software Requirements Specification (SRS) document for the Movies and TV Shows Exploreris intended for:</p>
     `<ul>`
         `<li>`Colab. Isepciuc Daniel `</li>`
     `</ul>`
