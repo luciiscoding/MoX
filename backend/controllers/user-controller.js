@@ -1,7 +1,8 @@
 // backend/controllers/user-controller.js
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
-const jwt = require('jsonwebtoken');
+const cookie = require('cookie');
+const { sessionIdGenerator, getCookiesSession, checkSession, storeSessions } = require('../manageCookies');
 
 const register = async (req, res) => {
   try {
@@ -15,6 +16,14 @@ const register = async (req, res) => {
     const hashedPassword = await bcrypt.hash(password, 10);
     const newUser = new User({ username, email, password: hashedPassword });
     await newUser.save();
+    const sessionId = sessionIdGenerator();
+    storeSessions[sessionId] = { userId: newUser._id, timestamp: Date.now() };
+
+    res.setHeader('Set-Cookie', [
+      cookie.serialize('sessionId', sessionId, { httpOnly: true, path: '/', sameSite: 'Lax', secure: true }),
+      cookie.serialize('authenticated', 'true', { path: '/', sameSite: 'Lax', secure: true })
+    ]);
+
     res.writeHead(201, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: 'User registered successfully' }));
   } catch (err) {
@@ -32,9 +41,16 @@ const login = async (req, res) => {
       res.end(JSON.stringify({ message: 'Invalid email or password' }));
       return;
     }
-    const token = jwt.sign({ userId: user._id }, 'secretKey', { expiresIn: '1h' });
+    const sessionId = sessionIdGenerator();
+    storeSessions[sessionId] = { userId: user._id, timestamp: Date.now() };
+
+    res.setHeader('Set-Cookie', [
+      cookie.serialize('sessionId', sessionId, { httpOnly: true, path: '/', sameSite: 'Lax', secure: true }),
+      cookie.serialize('authenticated', 'true', { path: '/', sameSite: 'Lax', secure: true })
+    ]);
+
     res.writeHead(200, { 'Content-Type': 'application/json' });
-    res.end(JSON.stringify({ token }));
+    res.end(JSON.stringify({ token: sessionId }));
   } catch (err) {
     res.writeHead(500, { 'Content-Type': 'application/json' });
     res.end(JSON.stringify({ message: 'Internal Server Error' }));
