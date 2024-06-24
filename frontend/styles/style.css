@@ -257,8 +257,10 @@ button:hover {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 20px;
-    margin-top: 20px; /* Adjust position */
+    margin-bottom: -90px;
+    margin-top: 90px; /* Adjust position */
+    margin-left: 40px;
+    margin-right: 40px;
 }
 
 #searchInput {

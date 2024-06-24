@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         localStorage.setItem('isAdmin', 'true'); // Set admin status in local storage
                         window.location.href = 'admin-page.html'; // Redirect to admin page
                     } else {
-                        alert('Login successful');
+                        alert('Wrong credentials for admin login');
                         window.location.href = 'index.html'; // Redirect to index page
                     }
                 } else {

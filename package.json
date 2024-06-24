@@ -6,6 +6,7 @@
     "cookie-parser": "^1.4.6",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.4.1",
-    "node": "^20.14.0"
+    "node": "^20.14.0",
+    "svg.js": "^2.7.1"
   }
 }

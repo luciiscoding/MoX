@@ -21,7 +21,7 @@
             <li class="hideOnMobile"><a href="index.html">Home</a></li>
             <li class="hideOnMobile"><a href="about.html">About Us</a></li>
             <li class="hideOnMobile"><a href="contact.html">Contact</a></li>
-            <li class="hideOnMobile"><a href="login.html">Log out</a></li>
+            <li class="hideOnMobile logout"><a href="login.html">Log out</a></li>
             <li class="menu--button" onclick="showSidebar()"><img src="../images/burger-menu.png" alt="menuButton"></li>
         </ul>
     </nav>
@@ -29,12 +29,11 @@
     <h1 class="header">Movies and TV Shows Explorer</h1> 
 
     <!-- Search Bar -->
-    <div class="search-container">
-        <input type="text" id="searchInput" placeholder="Search for movies...">
-        <button id="searchButton">Search</button>
-    </div>
-
-    <button id="filterButton">Filter Button</button>
+    <div class="search-container">  
+             <button id="filterButton">Filter</button>     
+             <input type="text" id="searchInput" placeholder="Search for movies...">    
+             <button id="searchButton">Search</button> 
+      </div>
     
     <br>
     <div id="cardContainer"></div>
@@ -63,75 +62,75 @@
     </div>
 
     <!-- Filter options modal -->
-    <div id="filterOptionsModal" class="modal">
-        <div class="modal-content">
-            <span class="close-button" onclick="closeFilterModal()">&times;</span>
-            <div id="filterOptionsContent">
-                <div>
-                    <label for="startYearInput">Start Year:</label>
-                    <input type="number" id="startYearInput" placeholder="Enter start year">
-                </div>
-                <div>
-                    <label for="endYearInput">End Year:</label>
-                    <input type="number" id="endYearInput" placeholder="Enter end year">
-                </div>
-                <div>
-                <div>
-                    <label>Genres:</label>
-                    <div>
-                        <input type="checkbox" id="genreAction" value="Action">
-                        <label for="genreAction">Action</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="genreAdventure" value="Adventure">
-                        <label for="genreAdventure">Adventure</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="genreAnimation" value="Animation">
-                        <label for="genreAnimation">Animation</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="genreBiographical" value="Biographical">
-                        <label for="genreBiographical">Biographical</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="genreComedy" value="Comedy">
-                        <label for="genreComedy">Comedy</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="genreDocumentary" value="Documentary">
-                        <label for="genreDocumentary">Documentary</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="genreDrama" value="Drama">
-                        <label for="genreDrama">Drama</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="genreFamily" value="Family">
-                        <label for="genreFamily">Family</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="genreFantasy" value="Fantasy">
-                        <label for="genreFantasy">Fantasy</label>
-                    </div>
-                    <div>
-                        <input type="checkbox" id="genreSuperhero" value="Superhero">
-                        <label for="genreSuperhero">Superhero</label>
-                    </div>
-                    <!-- Add more genres as needed -->
-                </div>
-                <label for="orderBySelect">Order By:</label>
-                <select id="orderBySelect">
-                    <option value="relevance">Relevance</option>
-                    <option value="year">Year</option>
-                    <option value="alpha">Alphabetical</option>
-                    <option value="reverseAlpha">Reverse Alphabetical</option>
-                </select>
-                <button id="applyFilterButton">Apply Filter</button>
-                <button id="clearFiltersButton" onclick="clearFilters()">Clear All Filters</button>
+    <!-- Filter options modal -->
+<div id="filterOptionsModal" class="modal">
+    <div class="modal-content">
+        <span class="close-button" onclick="closeFilterModal()">&times;</span>
+        <div id="filterOptionsContent">
+            <div>
+                <label for="startYearInput">Start Year:</label>
+                <input type="number" id="startYearInput" placeholder="Enter start year">
             </div>
+            <div>
+                <label for="endYearInput">End Year:</label>
+                <input type="number" id="endYearInput" placeholder="Enter end year">
+            </div>
+            <div>
+                <label>Genres:</label>
+                <div>
+                    <input type="checkbox" id="genreAction" value="Action">
+                    <label for="genreAction">Action</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="genreAdventure" value="Adventure">
+                    <label for="genreAdventure">Adventure</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="genreAnimation" value="Animation">
+                    <label for="genreAnimation">Animation</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="genreBiographical" value="Biographical">
+                    <label for="genreBiographical">Biographical</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="genreComedy" value="Comedy">
+                    <label for="genreComedy">Comedy</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="genreDocumentary" value="Documentary">
+                    <label for="genreDocumentary">Documentary</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="genreDrama" value="Drama">
+                    <label for="genreDrama">Drama</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="genreFamily" value="Family">
+                    <label for="genreFamily">Family</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="genreFantasy" value="Fantasy">
+                    <label for="genreFantasy">Fantasy</label>
+                </div>
+                <div>
+                    <input type="checkbox" id="genreSuperhero" value="Superhero">
+                    <label for="genreSuperhero">Superhero</label>
+                </div>
+                <!-- Add more genres as needed -->
+            </div>
+            <label for="orderBySelect">Order By:</label>
+            <select id="orderBySelect">
+                <option value="relevance">Relevance</option>
+                <option value="year">Year</option>
+                <option value="alpha">Alphabetical</option>
+                <option value="reverseAlpha">Reverse Alphabetical</option>
+            </select>
+            <button id="applyFilterButton">Apply Filter</button>
+            <button id="clearFilterButton" onclick="clearFilters()">Clear All Filters</button>
         </div>
     </div>
+</div>
 
 
     <script src="../scripts/auth.js"></script>
