@@ -23,18 +23,18 @@ document.addEventListener('DOMContentLoaded', () => {
                     headers: {
                         'Content-Type': 'application/json'
                     },
-                    credentials: 'include', // Include cookies in the request
+                    credentials: 'include', 
                     body: JSON.stringify({ email, password })
                 });
                 const data = await response.json();
                 if (response.ok) {
                     if (data.isAdmin) {
                         alert('Admin login successful');
-                        localStorage.setItem('isAdmin', 'true'); // Set admin status in local storage
-                        window.location.href = 'admin-page.html'; // Redirect to admin page
+                        localStorage.setItem('isAdmin', 'true'); 
+                        window.location.href = 'admin-page.html'; 
                     } else {
                         alert('Wrong credentials for admin login');
-                        window.location.href = 'index.html'; // Redirect to index page
+                        window.location.href = 'index.html'; 
                     }
                 } else {
                     alert(data.message);

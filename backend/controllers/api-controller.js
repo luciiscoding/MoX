@@ -1,4 +1,4 @@
-// backend/controllers/api-controller.js
+
 const User = require('../models/user');
 
 module.exports = {

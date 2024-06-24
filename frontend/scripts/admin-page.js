@@ -1,9 +1,8 @@
-// frontend/scripts/admin-page.js
 document.addEventListener('DOMContentLoaded', () => {
     const isAdmin = localStorage.getItem('isAdmin') === 'true';
     if (!isAdmin) {
         alert('Access denied. Admins only.');
-        window.location.href = 'admin-page.html'; // Redirect to admin login page
+        window.location.href = 'admin-page.html'; 
         return;
     }
 

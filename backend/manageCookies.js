@@ -1,4 +1,4 @@
-// backend/manageCookies.js
+
 const crypto = require('crypto');
 
 const storeSessions = {};
@@ -33,7 +33,7 @@ const deleteSession = () => {
     }
 };
 
-// Schedule cleanup function to run every 10 seconds
+
 setInterval(deleteSession, 10 * 1000);
 
 module.exports = {

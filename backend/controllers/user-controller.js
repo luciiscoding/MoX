@@ -1,4 +1,4 @@
-// backend/controllers/user-controller.js
+
 const User = require('../models/user');
 const bcrypt = require('bcryptjs');
 const cookie = require('cookie');
